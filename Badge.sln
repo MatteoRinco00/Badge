@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Badge.EF", "Badge.EF\Badge.EF.csproj", "{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Badge.Practise.Test", "Badge.Practise.Test\Badge.Practise.Test.csproj", "{7C86234E-962C-4EB2-87CC-810D4E316C19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C86234E-962C-4EB2-87CC-810D4E316C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C86234E-962C-4EB2-87CC-810D4E316C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C86234E-962C-4EB2-87CC-810D4E316C19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C86234E-962C-4EB2-87CC-810D4E316C19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
