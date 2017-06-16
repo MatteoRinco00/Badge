@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Badge.EF.Entity
 {
+    [Table("Swipes")]//Nome della Tabella nel Database 
     public class Swipe
     {
-        public string idpersona = "";
-        public string pospersona = "";
-        public string orario = "";
-        public string numeroswipe = "";
-
-        public void infoswipe()
-        {
-            Console.WriteLine("Inserisci Id della persona ");
-            string idpersona = Console.ReadLine();
-            Console.WriteLine("Inserisci la posizione dello swipe hdella persona ");
-            string pospersona = Console.ReadLine();
-            Console.WriteLine("Inserisci l'orario dello swipe");
-            string orario = Console.ReadLine();
-            Console.WriteLine("Inserisci il numero di swipe della persona ");
-            string numeroswipe = Console.ReadLine();
-
-        }
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int IdSwipe { get; set; }
         
+        public string PosPersona { get; set; }
+        public string Orario { get; set; }
+        //public string NumeroSwipe { get; set; }
+
+        public string MachineName { get; set; }
+        [ForeignKey("MachineName")]
+        public Machine Machine { get; set; }
+        public int IdPerson { get; set; }
+        [ForeignKey("IdPerson")]
+        public Person Person { get; set; }
+
+  
+
     }
 }

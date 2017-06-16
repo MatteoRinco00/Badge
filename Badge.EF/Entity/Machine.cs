@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Badge.EF.Entity
 {
+    [Table("Machines")]//Nome della Tabella nel Database
+
     public class Machine
     {
-        public string ipmachine = "";
-        public string macaddress = "";
-        public string nmachine = ""; 
-
-        public void infomachine()
+        public Machine()
         {
-            Console.WriteLine("Inserisci ip della machine ");
-            string ipmachine = Console.ReadLine();
-            Console.WriteLine("Inserisci macaddress della machine ");
-            string macaddress = Console.ReadLine();
-            Console.WriteLine("Inserisci il numero di machine");
-            string nmachine = Console.ReadLine();
         }
+
+        [Key]
+        public string Name { get; set; }
+
+        public string IpMachine { get; set; }
+        public string MacAddress { get; set; }
+        public List<Swipe> Swipes { get; set; } = new List<Swipe>();
+
 
     }
 }
