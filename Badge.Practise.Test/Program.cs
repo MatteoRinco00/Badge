@@ -9,9 +9,19 @@ namespace Badge.Practise.Test
     {
         static void Main(string[] args)
         {
-            Console.
-            Person persona = new Person();
-            persona.nomecognome=condol 
+            Person persona1 = new Person();
+            Person persona2 = new Person();
+            Swipe swipepersona1 = new Swipe();
+            Swipe swipepersona2 = new Swipe();
+            Machine machinepersona1 = new Machine();
+            Machine machinepersona2 = new Machine();
+            persona1.nome();
+            persona2.nome();
+            swipepersona1.infoswipe();
+            swipepersona2.infoswipe();
+            machinepersona1.infomachine();
+            machinepersona2.infomachine();
+            Console.ReadKey();
 
         }
     }
