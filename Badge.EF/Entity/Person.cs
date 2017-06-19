@@ -16,8 +16,11 @@ namespace Badge.EF.Entity
         public string Nome { get; set; }
         public string Cognome { get; set; }
 
-        public List<Entity.Badge> Badge { get; set; } = new List<Entity.Badge>();
+        public List<Badge> Badge { get; set; } = new List<Badge>();
 
-        
+        public Person()
+        {
+
+        }
     }
 }

@@ -12,8 +12,9 @@ namespace Badge.Practise.Test
         static void Main(string[] args)
         {
 
- 
-            BadgeContext db = new BadgeContext("Server=(localdb)\\mssqllocaldb;Database=Badge;Trusted_Connection=True;MultipleActiveResultSets=true");
+            DbContextOptionsBuilder<BadgeContext> option = new DbContextOptionsBuilder<BadgeContext>(new DbContextOptions<BadgeContext>());
+            option.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Badge;Trusted_Connection=True;MultipleActiveResultSets=true");
+            BadgeContext db = new BadgeContext(option.Options);
             BadgeContextInitializer.Initialize(db);
 
             PopulatePerson p = new PopulatePerson();
