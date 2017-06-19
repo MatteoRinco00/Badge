@@ -1,0 +1,22 @@
+﻿using Badge.EF.Entity;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Badge.Practise.Test
+{
+    public class PopulateSwipe
+    {
+        public Swipe Populate(DateTime orario, EF.Entity.Badge b, string posPersona, Machine m)
+        {
+
+            Swipe swipe = new Swipe();
+            swipe.Orario = orario ;
+            swipe.Badge = b;
+            swipe.PosPersona = posPersona;
+            swipe.Machine = m;
+            return swipe;
+
+        }
+    }
+}

@@ -11,72 +11,69 @@ namespace Badge.Practise.Test
     {
         static void Main(string[] args)
         {
-           
-            Machine machinepersona1 = new Machine()
-            {
-                IpMachine="172.168.0.1",
-                MacAddress="00-E0-18-56-25"
-            };
-            Machine machinepersona2 = new Machine()
-            {
-                IpMachine = "172.168.0.2",
-                MacAddress = "F3-E0-19-5A-87"
-            };
 
-            Swipe swipepersona1 = new Swipe()
-            {
-                Orario= "16.30",
-                PosPersona = "Villafranca"
-
-            };
-            Swipe swipepersona2 = new Swipe()
-            {
-                Orario = "16.30",
-                PosPersona = "Villafranca"
-
-            };
-            Swipe swipepersona3 = new Swipe()
-            {
-                Orario = "16.30",
-                PosPersona = "Villafranca"
-
-            };
-
-            swipepersona1.Machine = machinepersona1;
-            swipepersona2.Machine = machinepersona1;
-            swipepersona3.Machine = machinepersona2;
-
-
-            Person persona1 = new Person()
-            {
-                Nome = "Matteo",
-                Cognome = "Rinco"                
-            };
-
-            
-            persona1.Swipes.Add(swipepersona1);
-            persona1.Swipes.Add(swipepersona2);
-
-            Person persona2 = new Person()
-            {
-                Nome = "Matilde",
-                Cognome = "Rinco"
-            };
-            persona2.Swipes.Add(swipepersona3);
-
-
-
+ 
             BadgeContext db = new BadgeContext("Server=(localdb)\\mssqllocaldb;Database=Badge;Trusted_Connection=True;MultipleActiveResultSets=true");
             BadgeContextInitializer.Initialize(db);
 
-            db.Machines.Add(machinepersona1);
-            db.Machines.Add(machinepersona2);
-            db.Swipe.Add(swipepersona1);
-            db.Swipe.Add(swipepersona2);
-            db.Swipe.Add(swipepersona3);
+            PopulatePerson p = new PopulatePerson();
+            string nome1 = "Matteo";
+            string nome2 = "Antonio";
+            string cognome1 = "Rinco";
+            string cognome2 = "Rossi";
+            Person persona1 = p.Populate(nome1,cognome1);
+            Person persona2 = p.Populate(nome2, cognome2);
+            Console.WriteLine(persona1);
             db.People.Add(persona1);
             db.People.Add(persona2);
             db.SaveChanges();
+
+            PopulateMachine m = new PopulateMachine();
+            string IpMachine1 = "172.168.0.1";
+            string IpMachine2 = "172.168.0.2";
+            string MacAddress1 = "DD-5A-38-A2-D3-27";
+            string MacAddress2 = "DF-7B-7A-22-A2-60";
+            Machine machine1 = m.Populate(IpMachine1, MacAddress1);
+            Machine machine2 = m.Populate(IpMachine2, MacAddress2);
+            Console.WriteLine(machine1);
+            db.Machines.Add(machine1);
+            db.Machines.Add(machine2);
+            db.SaveChanges();
+
+
+            PopulateBadge b = new PopulateBadge();
+            string nomeBadge1 = "Mtor01";
+            string nomeBadge2 = "Mtor02";
+            string nomeBadge3 = "AtonRsi01";
+            EF.Entity.Badge badge1 = b.Populate(persona1, nomeBadge1);
+            EF.Entity.Badge badge2 = b.Populate(persona1, nomeBadge2);
+            EF.Entity.Badge badge3 = b.Populate(persona2, nomeBadge3);
+            Console.WriteLine(badge1.ToString());
+            db.Badges.Add(badge1);
+            db.Badges.Add(badge2);
+            db.Badges.Add(badge3);
+            db.SaveChanges();
+
+            PopulateSwipe s = new PopulateSwipe();
+            DateTime orario = DateTime.Now;
+            string pospersona = "Villafranca";
+            Swipe swipe1 = s.Populate(orario,badge1,pospersona,machine1);
+            Swipe swipe2 = s.Populate(orario, badge1, pospersona, machine1);
+            Swipe swipe3 = s.Populate(orario, badge1, pospersona, machine2);
+            Swipe swipe4 = s.Populate(orario, badge2, pospersona, machine2);
+            Swipe swipe5 = s.Populate(orario, badge2, pospersona, machine2);
+            Swipe swipe6 = s.Populate(orario, badge3, pospersona, machine2);
+            Swipe swipe7 = s.Populate(orario, badge3, pospersona, machine1);
+            db.Swipe.Add(swipe1);
+            db.Swipe.Add(swipe2);
+            db.Swipe.Add(swipe3);
+            db.Swipe.Add(swipe4);
+            db.Swipe.Add(swipe5);
+            db.Swipe.Add(swipe6);
+            db.Swipe.Add(swipe7);
+            db.SaveChanges();
+
+            
             Console.ReadKey();
 
         }

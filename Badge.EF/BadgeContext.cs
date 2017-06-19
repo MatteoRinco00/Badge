@@ -12,6 +12,7 @@ namespace Badge.EF
         public DbSet<Machine> Machines { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Swipe> Swipe { get; set; }
+        public DbSet<Entity.Badge> Badges { get; set; }
 
         public BadgeContext(string connectionString)
         {
@@ -25,3 +26,5 @@ namespace Badge.EF
         }
     }
 }
+
+

@@ -12,11 +12,12 @@ namespace Badge.EF.Entity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdPerson { get; set; }
+
         public string Nome { get; set; }
         public string Cognome { get; set; }
 
-        public List<Swipe> Swipes { get; set; } = new List<Swipe>();
-       
+        public List<Entity.Badge> Badge { get; set; } = new List<Entity.Badge>();
 
+        
     }
 }
