@@ -38,8 +38,8 @@ namespace Badge.Web.Controllers
             {
                 person = await _context.People.ToListAsync();
             }
-            
 
+            result.Skip = skip;
             result.Count = quantita;
             foreach (var p in person)
             {

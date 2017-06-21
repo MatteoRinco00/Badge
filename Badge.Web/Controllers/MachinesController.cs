@@ -23,7 +23,7 @@ namespace Badge.Web.Controllers
         }
 
         // GET: Machines
-        public async Task<IActionResult> Index(int skip = 1, int take = 10)
+        public async Task<IActionResult> Index(int skip = 0, int take = 10)
         {
             PaginationViewModel<MachinesViewModel> result = new PaginationViewModel<MachinesViewModel>();
 
@@ -31,6 +31,7 @@ namespace Badge.Web.Controllers
             List<Machine> person = await _context.Machines.Skip(skip).Take(take).ToListAsync();
 
             result.Count = quantita;
+            result.Skip = skip;
             foreach (var p in person)
             {
                 MachinesViewModel pv = new MachinesViewModel()

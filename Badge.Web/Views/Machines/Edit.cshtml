@@ -25,22 +25,39 @@
                 <input asp-for="MacAddress" class="form-control" />
                 <span asp-validation-for="MacAddress" class="text-danger"></span>
             </div>
+
+            @*<div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+            </div>*@
+
+            <a asp-action="Edit" asp-route-id="@Model.Name">
+
+                <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save">
+
+                    <i class="large material-icons">save</i>
+                </button>
+            </a>
+
         </div>
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+            
         </div>
     </div>
 </form>
-
 <div>
-    <a asp-action="Index">
-        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Back to List">
-            <span class="glyphicon glyphicon-arrow-left"></span>
-        </button>
-    </a>
+
+
+
+        <a asp-action="Index">
+            <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">
+                <i class="material-icons">arrow_back</i>
+            </button>
+        </a>
+
 </div>
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

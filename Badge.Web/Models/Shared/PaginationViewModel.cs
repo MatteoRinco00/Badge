@@ -10,5 +10,6 @@ namespace Badge.Web.Models.Shared
     {
         public List<T> Data { get; set; } = new List<T>();
         public int Count { get; set; }
+        public int Skip { get; set; }
     }
 }
