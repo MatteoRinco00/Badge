@@ -1,4 +1,4 @@
-@model Badge.EF.Entity.Machine
+﻿@model Badge.EF.Entity.Machine
 
 @{
     ViewData["Title"] = "Details";
@@ -25,6 +25,23 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Name">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <a asp-action="Edit" asp-route-id="@Model.Name">
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Edit">
+            <span class="glyphicon glyphicon-edit"></span>
+        </button>
+    </a>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Back to List">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+        </button>
+    </a>
 </div>
+
+@section Scripts{
+    <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    })
+    </script>
+}

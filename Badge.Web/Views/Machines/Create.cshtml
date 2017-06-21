@@ -21,6 +21,7 @@
         <div class="form-group">
             <label asp-for="MacAddress" class="col-md-2 control-label"></label>
             <div class="col-md-10">
+@*<a href="~/Views/Machines/Create.cshtml">~/Views/Machines/Create.cshtml</a>*@                
                 <input asp-for="MacAddress" class="form-control" />
                 <span asp-validation-for="MacAddress" class="text-danger"></span>
             </div>
@@ -34,9 +35,21 @@
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Back to List">
+            <span class="glyphicon glyphicon-arrow-left"></span>
+        </button>
+    </a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+</script>
 }
+
+

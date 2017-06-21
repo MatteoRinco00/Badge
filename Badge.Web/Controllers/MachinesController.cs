@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Badge.EF;
 using Badge.EF.Entity;
+using Badge.Web.Models.Shared;
+using Badge.Web.Models.People;
+using Badge.Web.Models.Machines;
 
 namespace Badge.Web.Controllers
 {
@@ -20,21 +23,38 @@ namespace Badge.Web.Controllers
         }
 
         // GET: Machines
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int skip = 1, int take = 10)
         {
-            return View(await _context.Machines.ToListAsync());
+            PaginationViewModel<MachinesViewModel> result = new PaginationViewModel<MachinesViewModel>();
+
+            int quantita = await _context.Machines.CountAsync();
+            List<Machine> person = await _context.Machines.Skip(skip).Take(take).ToListAsync();
+
+            result.Count = quantita;
+            foreach (var p in person)
+            {
+                MachinesViewModel pv = new MachinesViewModel()
+                {
+                    IpMachine = p.IpMachine,
+                    Nome = p.Name,
+                    MacAddress = p.MacAddress
+                };
+                result.Data.Add(pv);
+            }
+
+            return View(result);
         }
 
         // GET: Machines/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
             var machine = await _context.Machines
-                .SingleOrDefaultAsync(m => m.Name == id.ToString());
+                .SingleOrDefaultAsync(m => m.Name == id);
             if (machine == null)
             {
                 return NotFound();
@@ -66,14 +86,14 @@ namespace Badge.Web.Controllers
         }
 
         // GET: Machines/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var machine = await _context.Machines.SingleOrDefaultAsync(m => m.Name == id.ToString());
+            var machine = await _context.Machines.SingleOrDefaultAsync(m => m.Name == id);
             if (machine == null)
             {
                 return NotFound();
@@ -117,15 +137,15 @@ namespace Badge.Web.Controllers
         }
 
         // GET: Machines/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
             var machine = await _context.Machines
-                .SingleOrDefaultAsync(m => m.Name == id.ToString());
+                .SingleOrDefaultAsync(m => m.Name == id);
             if (machine == null)
             {
                 return NotFound();

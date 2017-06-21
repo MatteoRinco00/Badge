@@ -27,9 +27,31 @@
     </dl>
     
     <form asp-action="Delete">
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a asp-action="Index">Back to List</a>
-        </div>
+        <a asp-action="Delete" asp-route-id="@Model.IdPerson">
+
+            <button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Delete">
+
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </a>
+
+
+            <a asp-action="Index">
+                <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Back to List">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                </button>
+            </a>
+
+</div>
     </form>
 </div>
+
+@section Scripts{
+    <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    })
+    </script>
+}
+
+

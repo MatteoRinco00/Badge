@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Badge.EF;
 using Badge.EF.Entity;
+using Badge.Web.Models.Shared;
+using Badge.Web.Models.People;
 
 namespace Badge.Web.Controllers
 {
@@ -19,11 +21,39 @@ namespace Badge.Web.Controllers
             _context = context;    
         }
 
+
+
         // GET: People
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? take, int skip = 0)
         {
-            return View(await _context.People.ToListAsync());
+            PaginationViewModel<PeopleViewModel> result = new PaginationViewModel<PeopleViewModel>();
+
+            int quantita = await _context.People.CountAsync();
+            List<Person> person = new List<Person>();
+            if (take.HasValue)
+            {
+                person = await _context.People.Skip(skip).Take(take.Value).ToListAsync();
+            }
+            else
+            {
+                person = await _context.People.ToListAsync();
+            }
+            
+
+            result.Count = quantita;
+            foreach (var p in person)
+            {
+                PeopleViewModel pv = new PeopleViewModel()
+                {
+                    Cognome = p.Cognome,
+                    Nome = p.Nome,
+                    IdPerson = p.IdPerson
+                };
+                result.Data.Add(pv);
+            }
+            return View(result);
         }
+        
 
         // GET: People/Details/5
         public async Task<IActionResult> Details(int? id)

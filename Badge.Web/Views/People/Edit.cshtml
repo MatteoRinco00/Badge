@@ -34,10 +34,19 @@
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<a asp-action="Index">
+    <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Back to List">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+    </button>
+</a>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+</script>
+    }
