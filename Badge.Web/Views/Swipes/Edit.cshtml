@@ -1,0 +1,71 @@
+@model Badge.EF.Entity.Swipe
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Swipe</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="IdSwipe" />
+        <div class="form-group">
+            <label asp-for="PosPersona" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PosPersona" class="form-control" />
+                <span asp-validation-for="PosPersona" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Orario" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Orario" class="form-control" />
+                <span asp-validation-for="Orario" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MachineName" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="MachineName" class="form-control" asp-items="ViewBag.MachineName"></select>
+                <span asp-validation-for="MachineName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NomeBadge" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="NomeBadge" class="form-control" asp-items="ViewBag.NomeBadge"></select>
+                <span asp-validation-for="NomeBadge" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <a asp-action="Edit" asp-route-id="@Model.IdSwipe">
+
+                <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save">
+
+                    <i class="large material-icons">save</i>
+                </button>
+            </a>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">
+            <i class="material-icons">arrow_back</i>
+        </button>
+    </a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+</script>
+}

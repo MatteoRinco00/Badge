@@ -1,0 +1,64 @@
+@model Badge.EF.Entity.Swipe
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Swipe</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="PosPersona" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="PosPersona" class="form-control" />
+                <span asp-validation-for="PosPersona" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Orario" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Orario" class="form-control" />
+                <span asp-validation-for="Orario" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="MachineName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="MachineName" class ="form-control" asp-items="ViewBag.MachineName"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="NomeBadge" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="NomeBadge" class ="form-control" asp-items="ViewBag.NomeBadge"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">
+            <i class="material-icons">arrow_back</i>
+        </button>
+    </a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+</script>
+}

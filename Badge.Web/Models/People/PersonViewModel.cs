@@ -17,6 +17,7 @@ namespace Badge.Web.Models.People
         public string Nome { get; set; }
 
         [StringLength(250)]
-        public string Cognome { get; set; }        
+        public string Cognome { get; set; } 
+        public bool CanDelete { get; set; }
     }
 }

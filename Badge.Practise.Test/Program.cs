@@ -109,10 +109,14 @@ namespace Badge.Practise.Test
             string nomeBadge1 = "Mtor01";
             string nomeBadge2 = "Mtor02";
             string nomeBadge3 = "AtonRsi01";
-            EF.Entity.Badge badge1 = b.Populate(persona1, nomeBadge1);
-            EF.Entity.Badge badge2 = b.Populate(persona1, nomeBadge2);
-            EF.Entity.Badge badge3 = b.Populate(persona2, nomeBadge3);
+            EF.Entity.PopulateBadge badge1 = b.Populate(persona1, nomeBadge1);
+            EF.Entity.PopulateBadge badge2 = b.Populate(persona1, nomeBadge2);
+            EF.Entity.PopulateBadge badge3 = b.Populate(persona2, nomeBadge3);
             Console.WriteLine(badge1.ToString());
+            PopulateBadge id = new PopulateBadge();
+            id.idperson.Add(persona1.IdPerson);
+            id.idperson.Add(persona1.IdPerson);
+            id.idperson.Add(persona2.IdPerson);
             db.Badges.Add(badge1);
             db.Badges.Add(badge2);
             db.Badges.Add(badge3);

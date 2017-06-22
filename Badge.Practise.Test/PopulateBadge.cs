@@ -7,9 +7,10 @@ namespace Badge.Practise.Test
 {
     public class PopulateBadge
     {
-        public EF.Entity.Badge Populate(Person p, string nomeBadge)
+        public List<int> idperson = new List<int>();
+        public EF.Entity.PopulateBadge Populate(Person p, string nomeBadge)
         {
-            EF.Entity.Badge badge = new EF.Entity.Badge();
+            EF.Entity.PopulateBadge badge = new EF.Entity.PopulateBadge();
             badge.NomeBadge = nomeBadge;
 
             badge.Person = p;

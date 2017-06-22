@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Badge.EF.Entity
 {
     [Table("Badge")]//Nome della Tabella nel Database
-    public class Badge
+    public class PopulateBadge
     {
         [Key]
         public string NomeBadge { get; set; }
@@ -16,6 +16,7 @@ namespace Badge.EF.Entity
         public List<Swipe> Swipes { get; set; } = new List<Swipe>();
 
         public int IdPerson { get; set; }
+        //public bool Idperson { get; set; }
         [ForeignKey("IdPerson")]
         public Person Person { get; set; }
 

@@ -30,6 +30,7 @@ namespace Badge.Web.Controllers
 
             int quantita = await _context.People.CountAsync();
             List<Person> person = new List<Person>();
+
             if (take.HasValue)
             {
                 person = await _context.People.Skip(skip).Take(take.Value).ToListAsync();
@@ -47,10 +48,17 @@ namespace Badge.Web.Controllers
                 {
                     Cognome = p.Cognome,
                     Nome = p.Nome,
-                    IdPerson = p.IdPerson
-                };
+                    IdPerson = p.IdPerson     
+            };
+                
                 result.Data.Add(pv);
+
             }
+
+ 
+
+
+
             return View(result);
         }
         
@@ -146,13 +154,17 @@ namespace Badge.Web.Controllers
             return View(person);
         }
 
+
         // GET: People/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, int Idperson)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            bool haveBadge = _context.People
+                .Where(m => m.IdPerson == id)
+                .Select(x => x.Badge).Any();
 
             var person = await _context.People
                 .SingleOrDefaultAsync(m => m.IdPerson == id);
@@ -160,9 +172,11 @@ namespace Badge.Web.Controllers
             {
                 return NotFound();
             }
+            person.CanDelete = !haveBadge;
 
             return View(person);
         }
+
 
         // POST: People/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -173,6 +187,7 @@ namespace Badge.Web.Controllers
             _context.People.Remove(person);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
+
         }
 
         private bool PersonExists(int id)

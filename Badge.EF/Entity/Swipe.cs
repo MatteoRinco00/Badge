@@ -23,7 +23,7 @@ namespace Badge.EF.Entity
 
         public string NomeBadge { get; set; }
         [ForeignKey("NomeBadge")]
-        public Badge Badge { get; set; }
+        public PopulateBadge Badge { get; set; }
         
     }
 }

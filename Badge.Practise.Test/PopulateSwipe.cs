@@ -7,7 +7,7 @@ namespace Badge.Practise.Test
 {
     public class PopulateSwipe
     {
-        public Swipe Populate(DateTime orario, EF.Entity.Badge b, string posPersona, Machine m)
+        public Swipe Populate(DateTime orario, EF.Entity.PopulateBadge b, string posPersona, Machine m)
         {
 
             Swipe swipe = new Swipe();

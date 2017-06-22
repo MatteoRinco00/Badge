@@ -16,7 +16,9 @@ namespace Badge.EF.Entity
         public string Nome { get; set; }
         public string Cognome { get; set; }
 
-        public List<Badge> Badge { get; set; } = new List<Badge>();
+        public bool CanDelete;
+
+        public List<PopulateBadge> Badge { get; set; } = new List<PopulateBadge>();
 
         public Person()
         {
