@@ -26,8 +26,11 @@
             </tr>
         </thead>
         <tbody>
+
+
             @foreach (var item in Model.Data)
             {
+
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Nome)
@@ -38,28 +41,27 @@
                     <td>
 
                         <div class="btn-group" role="group" aria-label="...">
+                                <a href="#!" class="collection-item"><span class="new badge" data-badge-caption="badge"> @item.CountBadge</span> </a>
 
-                            
-                            
-                            <a asp-action="Edit" asp-route-id="@item.IdPerson">
-                                <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Edit">
-                                    <i class="material-icons">border_color</i>
-                                </button>
-                            </a>
+                                <a asp-action="Edit" asp-route-id="@item.IdPerson">
+                                    <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Edit">
+                                        <i class="material-icons">border_color</i>
+                                    </button>
+                                </a>
 
-                            <a asp-action="Details" asp-route-id="@item.IdPerson">
-                                <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Details">
-                                    <i class="large material-icons">pageview</i>
-                                </button>
-                            </a>
+                                <a asp-action="Details" asp-route-id="@item.IdPerson">
+                                    <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Details">
+                                        <i class="large material-icons">pageview</i>
+                                    </button>
+                                </a>
 
-                            <a asp-action="Delete" asp-route-id="@item.IdPerson">
-                                <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete">
-                                    <i class="large material-icons">delete</i>
-                                </button>
-                            </a>
+                                <a asp-action="Delete" asp-route-id="@item.IdPerson">
+                                    <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete">
+                                        <i class="large material-icons">delete</i>
+                                    </button>
+                                </a>
 
-                        </div>
+                            </div>
                     </td>
 
                 </tr>

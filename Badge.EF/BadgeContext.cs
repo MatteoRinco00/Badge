@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Badge.EF
 {
@@ -21,6 +22,16 @@ namespace Badge.EF
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+        }
+
+        public Task addAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

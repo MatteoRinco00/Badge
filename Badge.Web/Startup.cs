@@ -9,6 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Badge.EF;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Badge.EF.Entity;
+using Badge.Web.Models.People;
+using Badge.Web.Models.Machines;
+using Badge.Web.Models.Swipes;
 
 namespace Badge.Web
 {
@@ -59,6 +64,26 @@ namespace Badge.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            this.ConfigureAutoMapper();
+        }
+
+        private void ConfigureAutoMapper()
+        {
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Person, PeopleViewModel>().ReverseMap();
+
+                cfg.CreateMap<Machine, MachinesViewModel>()
+                .ForMember(dest => dest.Nome, opt => opt.ResolveUsing(origin => origin.Name))
+                .ReverseMap()
+                .ForMember(dest => dest.Name, opt => opt.ResolveUsing(origin => origin.Nome));
+
+                cfg.CreateMap<Swipe, SwipesViewModel>().ReverseMap();
+
+            });
+
+            Mapper.AssertConfigurationIsValid();
+
         }
     }
 }

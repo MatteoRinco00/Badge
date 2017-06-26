@@ -10,6 +10,7 @@ using Badge.EF.Entity;
 using Badge.Web.Models.Shared;
 using Badge.Web.Models.People;
 using Badge.Web.Models.Machines;
+using AutoMapper;
 
 namespace Badge.Web.Controllers
 {
@@ -75,15 +76,16 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,IpMachine,MacAddress")] Machine machine)
+        public async Task<IActionResult> Create(MachinesViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(machine);
+                var newmachine = Mapper.Map<Machine>(model);
+                _context.Add(newmachine);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(machine);
+            return View(model);
         }
 
         // GET: Machines/Edit/5
@@ -95,11 +97,14 @@ namespace Badge.Web.Controllers
             }
 
             var machine = await _context.Machines.SingleOrDefaultAsync(m => m.Name == id);
+
+            MachinesViewModel model = Mapper.Map<MachinesViewModel>(machine);
+
             if (machine == null)
             {
                 return NotFound();
             }
-            return View(machine);
+            return View(model);
         }
 
         // POST: Machines/Edit/5
@@ -107,34 +112,18 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,IpMachine,MacAddress")] Machine machine)
+        public async Task<IActionResult> Edit(string id, MachinesViewModel model)
         {
-            if (id != machine.Name)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(machine);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MachineExists(machine.Name))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var machine = await _context.Machines.SingleAsync(x => x.Name == id);
+                Mapper.Map(model, machine);
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(machine);
+
+            return View(model);
         }
 
         // GET: Machines/Delete/5

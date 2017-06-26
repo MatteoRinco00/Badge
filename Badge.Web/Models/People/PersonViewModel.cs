@@ -17,7 +17,9 @@ namespace Badge.Web.Models.People
         public string Nome { get; set; }
 
         [StringLength(250)]
-        public string Cognome { get; set; } 
-        public bool CanDelete { get; set; }
+        public string Cognome { get; set; }
+
+        [Display(Name = "Numero badge")]
+        public int CountBadge { get; set; }
     }
 }

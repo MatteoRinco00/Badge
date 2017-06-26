@@ -9,6 +9,7 @@ using Badge.EF;
 using Badge.EF.Entity;
 using Badge.Web.Models.Shared;
 using Badge.Web.Models.Swipes;
+using AutoMapper;
 
 namespace Badge.Web.Controllers
 {
@@ -88,17 +89,19 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdSwipe,PosPersona,Orario,MachineName,NomeBadge")] Swipe swipe)
+        public async Task<IActionResult> Create( SwipesViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(swipe);
+                var newswipes = Mapper.Map<Swipe>(model);
+                _context.Add(newswipes);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
-            ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
-            return View(swipe);
+
+            //ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
+            //ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
+            return View(model);
         }
 
         // GET: Swipes/Edit/5
@@ -110,13 +113,17 @@ namespace Badge.Web.Controllers
             }
 
             var swipe = await _context.Swipe.SingleOrDefaultAsync(m => m.IdSwipe == id);
+
+            SwipesViewModel model = Mapper.Map<SwipesViewModel>(swipe);
+
             if (swipe == null)
             {
                 return NotFound();
             }
-            ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
-            ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
-            return View(swipe);
+
+            //ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
+            //ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
+            return View(model);
         }
 
         // POST: Swipes/Edit/5
@@ -124,36 +131,22 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdSwipe,PosPersona,Orario,MachineName,NomeBadge")] Swipe swipe)
+        public async Task<IActionResult> Edit(int id, SwipesViewModel model)
         {
-            if (id != swipe.IdSwipe)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(swipe);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SwipeExists(swipe.IdSwipe))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var swipe = await _context.Swipe.SingleAsync(x => x.IdSwipe == id);
+                Mapper.Map(model, swipe);
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
-            ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
-            return View(swipe);
+
+
+            //ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
+            //ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
+            return View(model);
+
         }
 
         // GET: Swipes/Delete/5

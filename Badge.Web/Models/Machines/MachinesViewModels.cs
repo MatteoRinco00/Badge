@@ -13,11 +13,11 @@ namespace Badge.Web.Models.Machines
             public string Nome { get; set; }
 
             [StringLength(16)]
-            [RegularExpression(@"[0-255]+'.'")]
+            //[RegularExpression("[0-9]+'.'")]
             public string IpMachine { get; set; }
 
             [StringLength(18)]
-            [RegularExpression(@"[A-F]+[1-9]+'-'")]
+            //[RegularExpression("[A-F]+[0-9]+'-'")]
             public string MacAddress { get; set; }
 
 

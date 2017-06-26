@@ -9,12 +9,14 @@ using Badge.EF;
 using Badge.EF.Entity;
 using Badge.Web.Models.Shared;
 using Badge.Web.Models.People;
+using AutoMapper;
 
 namespace Badge.Web.Controllers
 {
     public class PeopleController : Controller
     {
         private readonly BadgeContext _context;
+        private object Cont;
 
         public PeopleController(BadgeContext context)
         {
@@ -24,41 +26,38 @@ namespace Badge.Web.Controllers
 
 
         // GET: People
-        public async Task<IActionResult> Index(int? take, int skip = 0)
+        public async Task<IActionResult> Index(int? id, int take = 10, int skip = 0)
         {
+
+            
             PaginationViewModel<PeopleViewModel> result = new PaginationViewModel<PeopleViewModel>();
 
             int quantita = await _context.People.CountAsync();
             List<Person> person = new List<Person>();
-
-            if (take.HasValue)
-            {
-                person = await _context.People.Skip(skip).Take(take.Value).ToListAsync();
-            }
-            else
-            {
-                person = await _context.People.ToListAsync();
-            }
-
+            person = await _context.People.Skip(skip).Take(take).ToListAsync();
+            
             result.Skip = skip;
             result.Count = quantita;
+
+            var personBadge = await _context.People
+                   .Skip(skip)
+                   .Take(take)
+                   .Select(x => new { IdPerson = x.IdPerson, CountBadge = x.Badge.Count() })
+                   .ToListAsync();
+
             foreach (var p in person)
             {
                 PeopleViewModel pv = new PeopleViewModel()
                 {
                     Cognome = p.Cognome,
                     Nome = p.Nome,
-                    IdPerson = p.IdPerson     
-            };
-                
+                    IdPerson = p.IdPerson
+                };
+                pv.CountBadge = personBadge.
+                    FirstOrDefault(x => x.IdPerson == pv.IdPerson).
+                    CountBadge;
                 result.Data.Add(pv);
-
             }
-
- 
-
-
-
             return View(result);
         }
         
@@ -92,31 +91,30 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdPerson,Nome,Cognome")] Person person)
+        public async Task<IActionResult> Create(PeopleViewModel model)
         {
+
+
             if (ModelState.IsValid)
             {
-                _context.Add(person);
+                var newperson = Mapper.Map<Person>(model);
+                _context.Add(newperson);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(person);
+
+            return View(model);
         }
 
         // GET: People/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var person = await _context.People.SingleAsync(m => m.IdPerson == id);
+           
 
-            var person = await _context.People.SingleOrDefaultAsync(m => m.IdPerson == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-            return View(person);
+            PeopleViewModel model = Mapper.Map<PeopleViewModel>(person);
+
+            return View(model);
         }
 
         // POST: People/Edit/5
@@ -124,39 +122,23 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdPerson,Nome,Cognome")] Person person)
+        public async Task<IActionResult> Edit(int id, PeopleViewModel model)
         {
-            if (id != person.IdPerson)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(person);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PersonExists(person.IdPerson))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var person = await _context.People.SingleAsync(x => x.IdPerson == id);
+                Mapper.Map(model, person);
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(person);
+
+            return View(model);
         }
 
 
         // GET: People/Delete/5
-        public async Task<IActionResult> Delete(int? id, int Idperson)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -164,8 +146,10 @@ namespace Badge.Web.Controllers
             }
             bool haveBadge = _context.People
                 .Where(m => m.IdPerson == id)
-                .Select(x => x.Badge).Any();
+                .Any(x => x.Badge.Any());
 
+            List<PopulateBadge> badge = new List<PopulateBadge>();
+            
             var person = await _context.People
                 .SingleOrDefaultAsync(m => m.IdPerson == id);
             if (person == null)

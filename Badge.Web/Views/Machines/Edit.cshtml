@@ -1,4 +1,8 @@
-@model Badge.EF.Entity.Machine
+@using Badge.Web.Models.Shared
+@using Badge.Web.Models.Machines
+
+
+@model MachinesViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -11,7 +15,7 @@
         <h4>Machine</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Name" />
+    <input type="hidden" asp-for="Nome" />
         <div class="form-group">
             <label asp-for="IpMachine" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -27,13 +31,15 @@
             </div>
 
 
-            <a asp-action="Edit" asp-route-id="@Model.Name">
+            <a asp-action="Edit" asp-route-id="@Model.Nome">
+                <div class="center-align">
+                    <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save">
 
-                <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save">
-
-                    <i class="large material-icons">save</i>
-                </button>
+                        <i class="large material-icons">save</i>
+                    </button>
+                </div>
             </a>
+
 
         </div>
         <div class="form-group">

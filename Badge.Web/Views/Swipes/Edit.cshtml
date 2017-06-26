@@ -1,4 +1,7 @@
-@model Badge.EF.Entity.Swipe
+@using Badge.Web.Models.Shared
+@using Badge.Web.Models.Swipes
+
+@model SwipesViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -42,11 +45,11 @@
         </div>
         <div class="form-group">
             <a asp-action="Edit" asp-route-id="@Model.IdSwipe">
-
-                <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save">
-
-                    <i class="large material-icons">save</i>
-                </button>
+                <div class="center-align">
+                    <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save">
+                        <i class="large material-icons">save</i>
+                </div>
+                    </button>
             </a>
         </div>
     </div>
