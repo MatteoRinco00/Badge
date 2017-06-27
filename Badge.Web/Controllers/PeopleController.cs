@@ -40,6 +40,8 @@ namespace Badge.Web.Controllers
             result.Count = quantita;
             int Count1 = 0;
 
+            
+
             if (result.Count % 6 == 0)
             {
                 Count1 = (result.Count / 6) - 1;
@@ -67,6 +69,7 @@ namespace Badge.Web.Controllers
                     Professione = p.Professione,
                     IdPerson = p.IdPerson
                 };
+
                 pv.CountBadge = personBadge.
                     FirstOrDefault(x => x.IdPerson == pv.IdPerson).
                     CountBadge;

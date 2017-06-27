@@ -29,3 +29,31 @@ nav {
 }
 
 
+div.card-image.waves-effect.waves-block.waves-light {
+    height : 80%;
+    width : 80%;
+    margin-left : 10%;
+}
+
+botton.btn.tooltipped {
+    opacity : 0.1;
+
+}
+
+div.popout {
+    width: 10%;
+    opacity : 1;
+}
+
+
+div.jumbotron {
+    height  : 100%;
+}
+
+div.card-action{
+    color: #0d47a1;
+}
+
+
+
+
