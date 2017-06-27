@@ -7,11 +7,12 @@ namespace Badge.Practise.Test
 {
     public class PopulatePerson
     {
-        public Person Populate(string nome, string cognome)
+        public Person Populate(string nome, string cognome, string professione)
         {
             Person p = new Person();
             p.Nome = nome;
             p.Cognome = cognome;
+            p.Professione = professione;
 
             // TODO: NO
             // p.Badge

@@ -11,13 +11,17 @@ namespace Badge.Web.Models.People
         [Key]
         public int IdPerson { get; set; }
 
-        [StringLength(250)]
+        [StringLength(60)]
         [DataType(DataType.Text)]
         [Display(Name = "Nome di battesimo")]
         public string Nome { get; set; }
 
-        [StringLength(250)]
+        [StringLength(60)]
         public string Cognome { get; set; }
+
+        [StringLength(40)]
+        public string Professione { get; set; }
+
 
         [Display(Name = "Numero badge")]
         public int CountBadge { get; set; }

@@ -19,21 +19,25 @@ namespace Badge.Practise.Test
 
             PopulatePerson p = new PopulatePerson();
             string nome1 = "Matteo";
+            string professione1 = "Sviluppatore";
+            string professione2 = "Sistemista";
+            string professione3 = "Elettronico";
+            string professione4 = "Elettricita";
             string nome2 = "Antonio";
             string cognome1 = "Rinco";
             string cognome2 = "Rossi";
-            Person persona1 = p.Populate(nome1,cognome1);
-            Person persona2 = p.Populate(nome2, cognome2);
-            Person persona3 = p.Populate(nome1, cognome1);
-            Person persona4 = p.Populate(nome2, cognome2);
-            Person persona5 = p.Populate(nome1, cognome1);
-            Person persona6 = p.Populate(nome2, cognome2);
-            Person persona7 = p.Populate(nome1, cognome1);
-            Person persona8 = p.Populate(nome2, cognome2);
-            Person persona9 = p.Populate(nome1, cognome1);
-            Person persona10 = p.Populate(nome2, cognome2);
-            Person persona11 = p.Populate(nome1, cognome1);
-            Person persona12 = p.Populate(nome2, cognome2);
+            Person persona1 = p.Populate(nome1,cognome1,professione1);
+            Person persona2 = p.Populate(nome2, cognome2, professione2);
+            Person persona3 = p.Populate(nome1, cognome1, professione3);
+            Person persona4 = p.Populate(nome2, cognome2, professione4);
+            Person persona5 = p.Populate(nome1, cognome1, professione2);
+            Person persona6 = p.Populate(nome2, cognome2, professione1);
+            Person persona7 = p.Populate(nome1, cognome1, professione1);
+            Person persona8 = p.Populate(nome2, cognome2, professione3);
+            Person persona9 = p.Populate(nome1, cognome1, professione1);
+            Person persona10 = p.Populate(nome2, cognome2, professione4);
+            Person persona11 = p.Populate(nome1, cognome1, professione2);
+            Person persona12 = p.Populate(nome2, cognome2, professione1);
             Console.WriteLine(persona1);
             db.People.Add(persona1);
             db.People.Add(persona2);
@@ -46,7 +50,7 @@ namespace Badge.Practise.Test
             db.People.Add(persona9);
             db.People.Add(persona10);
             db.People.Add(persona11);
-            db.People.Add(persona12);
+
 
             db.SaveChanges();
 

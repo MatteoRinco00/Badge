@@ -11,9 +11,9 @@
 <a asp-action="Create">
 
     <a asp-action="Create" class="btn-floating btn-large waves-effect waves-light #26a69" data-position="bottom" data-delay="50" data-tooltip="Create New"><i class="material-icons">add</i></a>
-   
+
 </a>
-    <table class="table table-hover ">
+@*<table class="table table-hover ">
         <thead>
             <tr>
                 <th>
@@ -67,34 +67,113 @@
                 </tr>
             }
         </tbody>
-    </table>
+    </table>*@
+<div>
+    <br />
+</div>
 
-        <ul class="pagination">
-      
-            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
 
-            @for (int i = 0; i < (Model.Count / 10) + 1; i++)
-            {
-                @if (Model.Skip / 10 == i)
+@for (int i = 0; i < Model.Data.Count; i++)
+{
+    PeopleViewModel item = Model.Data.ElementAt(i);
+    @if(i + 1 % 3 == 0 || i == 0){
+        <text><div class="row"></text>
+    }
+    <div class="col s4">
+        <div class="card sticky-action">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="~/images/figurina1.jpg">
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s10">
+                        <span class="card-title activator grey-text text-darken-4">
+                            @(item.Nome + " " + item.Cognome)<i class="material-icons right"></i>
+                        </span>
+                    </div>
+                    <div class="col s2">
+                        <div style="position: relative; height: 70px;">
+                            <div class="fixed-action-btn" style="position: absolute; right: 24px;">
+                                <a class="btn-floating btn-large red">
+                                    <i class="large material-icons">mode_edit</i>
+                                </a>
+                                <ul>
+                                    <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+                                    <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+                                    <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+                                    <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p>@item.Professione</p>
+            </div>
+            <div class="card-action">
+                <a href="#">Badges</a>
+                <a href="#">Swipes</a>
+            </div>
+        </div>
+    </div>
+    @if (i + 1 % 3 == 0 || i == Model.Data.Count)
+    {
+        @: </div>
+    }
+}
+
+
+
+
+
+
+@*<!-- Dropdown Trigger -->
+    <a class='dropdown-button btn' href='#' data-activates='dropdown1'>Options</a>
+
+    <!-- Dropdown Structure -->
+    <ul id='dropdown1' class='dropdown-content'>
+        <li>@*<a asp-action="Edit" asp-route-id="@item.IdPerson"><i class="material-icons"></i>edit</a></li>
+        <li><a href="#!">two</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">three</a></li>
+        <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+        <li><a href="#!"><i class="material-icons">border_color</i>five</a></li>
+    </ul>*@
+
+
+
+
+
+
+<ul class="pagination">
+
+    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+
+
+
+    @for (int i = 0; i < (Model.Count) + 1; i++)
+    {
+
+
+        @if (Model.Skip / 6 == i)
                 {
-                    <li class="active"><a asp-controller="People" asp-action="Index" asp-route-skip="@(i * 10)" asp-route-take="10">@(i + 1)</a></li>
-                }
-                else
-                {
-                    <li><a asp-controller="People" asp-action="Index" asp-route-skip="@(i * 10)" asp-route-take="10">@(i + 1)</a></li>
-                }
-            }
-            <li>
+            <li class="active"><a asp-controller="People" asp-action="Index" asp-route-skip="@(i * 6)" asp-route-take="6">@(i + 1)</a></li>
+        }
+        else
+        {
+            <li><a asp-controller="People" asp-action="Index" asp-route-skip="@(i * 6)" asp-route-take="6">@(i + 1)</a></li>
+        }
+    }
+    <li>
 
-            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-            
-        </ul>
-  
+    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+
+</ul>
+
 
 @section Scripts{
     <script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    })
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        })
     </script>
 }

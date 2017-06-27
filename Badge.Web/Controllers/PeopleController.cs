@@ -26,7 +26,7 @@ namespace Badge.Web.Controllers
 
 
         // GET: People
-        public async Task<IActionResult> Index(int? id, int take = 10, int skip = 0)
+        public async Task<IActionResult> Index(int? id, int take = 6, int skip = 0)
         {
 
             
@@ -38,6 +38,19 @@ namespace Badge.Web.Controllers
             
             result.Skip = skip;
             result.Count = quantita;
+            int Count1 = 0;
+
+            if (result.Count % 6 == 0)
+            {
+                Count1 = (result.Count / 6) - 1;
+            }
+            else
+            {
+                Count1 = (result.Count / 6);
+            }
+
+            
+            result.Count = Count1;
 
             var personBadge = await _context.People
                    .Skip(skip)
@@ -51,6 +64,7 @@ namespace Badge.Web.Controllers
                 {
                     Cognome = p.Cognome,
                     Nome = p.Nome,
+                    Professione = p.Professione,
                     IdPerson = p.IdPerson
                 };
                 pv.CountBadge = personBadge.
