@@ -68,22 +68,30 @@
     </tbody>
 </table>
 
+
+<div>
+    <a asp-area="" asp-controller="People" asp-action="Index">
+        <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">
+            <i class="material-icons">arrow_back</i>
+        </button>
+    </a>
+</div>
+
 <ul class="pagination">
 
     <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
 
-    @for (int i = 0; i < (Model.Count / 10) + 1; i++)
+    @for (int i = 0; i < (Model.countotale / 6) + 1; i++)
     {
-        System.Diagnostics.Debug.WriteLine(Model.Count);
-        
+      
 
-        @if (Model.Skip / 10 == i)
+        @if (Model.Skip / 6 == i)
         {
-            <li class="active"><a asp-controller="Swipes" asp-action="Index" asp-route-skip="@(i * 10)" asp-route-take="10">@(i + 1)</a></li>
+            <li class="active"><a asp-controller="Swipes" asp-action="Index" asp-route-peopleid="@(Model.Data.FirstOrDefault().IdPerson)" asp-route-skip="@(i * 6)" asp-route-take="6">@(i + 1)</a></li>
         }
         else
         {
-            <li><a asp-controller="Swipes" asp-action="Index" asp-route-skip="@(i * 10)" asp-route-take="10">@(i + 1)</a></li>
+            <li><a asp-controller="Swipes" asp-action="Index" asp-route-peopleid="@(Model.Data.FirstOrDefault().IdPerson)" asp-route-skip="@(i * 6)" asp-route-take="6">@(i + 1)</a></li>
         }
         
     }

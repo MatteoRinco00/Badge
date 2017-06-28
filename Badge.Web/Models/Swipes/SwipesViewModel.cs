@@ -17,6 +17,8 @@ namespace Badge.Web.Models.Swipes
         [Display( Name ="Posizione")]
         public string PosPersona { get; set; }
 
+        public string selnomebadge;
+
         public DateTime Orario { get; set; }
 
         [Display(Name = "Machine name")]
@@ -25,5 +27,6 @@ namespace Badge.Web.Models.Swipes
         [Display(Name = "Nome badge")]
         public string NomeBadge { get; set; }
 
+        public int IdPerson { get; set; }
     }
 }

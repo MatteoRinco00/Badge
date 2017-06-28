@@ -76,7 +76,7 @@
 @for (int i = 0; i < Model.Data.Count; i++)
 {
     PeopleViewModel item = Model.Data.ElementAt(i);
-    @if(i + 1 % 3 == 0 || i == 0){
+    @if( i % 3 == 0 || i == 0){
         <text><div class="row"></text>
     }
     <div class="col s4">
@@ -142,13 +142,13 @@
                 <p>@item.Professione</p>
             </div>
             <div class="card-action">
-                <a href="#">Badges</a>
-                <a href="#">Swipes</a>
+                <a asp-area="" asp-controller="People" asp-action="Badge_people" asp-route-peopleid="@(item.IdPerson)">Badge</a>
+                <a asp-area="" asp-controller="Swipes" asp-action="Index" asp-route-peopleid="@(item.IdPerson)">Swipes</a>
             </div>
         </div>
     </div>
 
-    @if (i+1  % 3 == 0 || i == Model.Data.Count)
+    @if ((i+1) % 3 == 0 || i == Model.Data.Count - 1)
     {
         @: </div>
     }

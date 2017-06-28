@@ -17,6 +17,8 @@ namespace Badge.EF.Entity
         public string PosPersona { get; set; }
         public DateTime Orario { get; set; }
 
+        public string selnomebadge;
+
         public string MachineName { get; set; }
         [ForeignKey("MachineName")]
         public Machine Machine { get; set; }

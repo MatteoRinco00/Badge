@@ -10,6 +10,8 @@ using Badge.EF.Entity;
 using Badge.Web.Models.Shared;
 using Badge.Web.Models.People;
 using AutoMapper;
+using Badge.Web.Models;
+using Badge.Web.Models.Badges;
 
 namespace Badge.Web.Controllers
 {
@@ -77,7 +79,56 @@ namespace Badge.Web.Controllers
             }
             return View(result);
         }
-        
+
+
+        // GET: People
+        public async Task<IActionResult> Badge_people (int peopleid, int take = 6, int skip = 0)
+        {
+
+
+            PaginationViewModel<BadgesViewModel> result = new PaginationViewModel<BadgesViewModel>();
+
+            int quantita = await _context.Badges.CountAsync();
+            List<PopulateBadge> person = new List<PopulateBadge>();
+            List<BadgesViewModel> badge = new List<BadgesViewModel>();
+            person = await _context.Badges.Skip(skip).Take(take).ToListAsync();
+
+            result.Skip = skip;
+            result.Count = quantita;
+            int Count1 = 0;
+
+            if (result.Count % 6 == 0)
+            {
+                Count1 = (result.Count / 6) - 1;
+            }
+            else
+            {
+                Count1 = (result.Count / 6);
+            }
+
+
+            result.Count = Count1;
+
+            
+
+            foreach (var p in person)
+            {
+                BadgesViewModel pv = new BadgesViewModel()
+                {
+                    NomeBadge = p.NomeBadge,
+                    IdPerson = p.IdPerson
+                };
+
+                if (peopleid==pv.IdPerson)
+                {
+                    result.Data.Add(pv);
+                }
+
+                
+            }
+            return View(result);
+        }
+
 
         // GET: People/Details/5
         public async Task<IActionResult> Details(int? id)

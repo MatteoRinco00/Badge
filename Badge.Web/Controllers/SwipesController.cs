@@ -23,20 +23,23 @@ namespace Badge.Web.Controllers
         }
 
         // GET: Swipes
-        public async Task<IActionResult> Index(int? take, int skip = 0)
+        public async Task<IActionResult> Index(int peopleid, int take=6, int skip = 0)
         {
             PaginationViewModel<SwipesViewModel> result = new PaginationViewModel<SwipesViewModel>(); 
-            int quantita = await _context.Swipe.CountAsync();
+            //int quantita = await _context.Swipe.CountAsync();
             List<Swipe> person = new List<Swipe>();
-            if (take.HasValue)
-            {
-                person = await _context.Swipe.Skip(skip).Take(take.Value).ToListAsync();
-            }
-            else
-            {
-                person = await _context.Swipe.ToListAsync();
-            }
+            int quantitatot = await _context.Swipe.CountAsync();
 
+            int quantita = await _context.Swipe
+                .Where(x => x.Badge.IdPerson == peopleid)
+                .CountAsync();
+            person = await _context.Swipe
+                .Skip(skip).Take(take)
+                .Include(x => x.Badge)
+                .Where(x => x.Badge.IdPerson == peopleid)
+                .ToListAsync();
+
+            result.countotale = quantitatot;
             result.Count = quantita;
             result.Skip = skip;
             foreach (var p in person)
@@ -47,9 +50,10 @@ namespace Badge.Web.Controllers
                     PosPersona = p.PosPersona,
                     Orario = p.Orario,
                     MachineName = p.MachineName,
-                    NomeBadge = p.NomeBadge
+                    NomeBadge = p.NomeBadge,
+                    IdPerson = p.Badge.IdPerson
                 };
-                result.Data.Add(pv);
+                result.Data.Add(pv);               
             }
 
             return View(result);

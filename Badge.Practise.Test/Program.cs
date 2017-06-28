@@ -136,6 +136,8 @@ namespace Badge.Practise.Test
             Swipe swipe5 = s.Populate(orario, badge2, pospersona, machine2);
             Swipe swipe6 = s.Populate(orario, badge3, pospersona, machine2);
             Swipe swipe7 = s.Populate(orario, badge3, pospersona, machine1);
+            Swipe swipe8 = s.Populate(orario, badge3, pospersona, machine1);
+            Swipe swipe9 = s.Populate(orario, badge1, pospersona, machine1);
             db.Swipe.Add(swipe1);
             db.Swipe.Add(swipe2);
             db.Swipe.Add(swipe3);
@@ -143,6 +145,8 @@ namespace Badge.Practise.Test
             db.Swipe.Add(swipe5);
             db.Swipe.Add(swipe6);
             db.Swipe.Add(swipe7);
+            db.Swipe.Add(swipe8);
+            db.Swipe.Add(swipe9);
             db.SaveChanges();
 
             

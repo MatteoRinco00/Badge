@@ -78,7 +78,9 @@ namespace Badge.Web
                 .ReverseMap()
                 .ForMember(dest => dest.Name, opt => opt.ResolveUsing(origin => origin.Nome));
 
-                cfg.CreateMap<Swipe, SwipesViewModel>().ReverseMap();
+                cfg.CreateMap<Swipe, SwipesViewModel>()
+                   .ForMember(dest => dest.IdPerson, opt => opt.Ignore())
+                   .ReverseMap();
 
             });
 
