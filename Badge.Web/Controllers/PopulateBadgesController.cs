@@ -1,160 +1,178 @@
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.Rendering;
-//using Microsoft.EntityFrameworkCore;
-//using Badge.EF;
-//using Badge.EF.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Badge.EF;
+using Badge.EF.Entity;
+using Badge.Web.Models.Badges;
+using Badge.Web.Models.Shared;
+using AutoMapper;
 
-//namespace Badge.Web.Controllers
-//{
-//    public class PopulateBadgesController : Controller
-//    {
-//        private readonly BadgeContext _context;
+namespace Badge.Web.Controllers
+{
+    public class PopulateBadgesController : Controller
+    {
+        private readonly BadgeContext _context;
 
-//        public PopulateBadgesController(BadgeContext context)
-//        {
-//            _context = context;    
-//        }
+        public PopulateBadgesController(BadgeContext context)
+        {
+            _context = context;
+        }
 
-//        // GET: PopulateBadges
-//        public async Task<IActionResult> Index()
-//        {
-//            var badgeContext = _context.Badges.Include(p => p.Person);
-//            return View(await badgeContext.ToListAsync());
-//        }
+        // GET: PopulateBadges
+        public async Task<IActionResult> Index(int peopleid, int take = 6, int skip = 0)
+        {
+            PaginationViewModel<BadgesViewModel> result = new PaginationViewModel<BadgesViewModel>();
 
-//        // GET: PopulateBadges/Details/5
-//        public async Task<IActionResult> Details(string? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+            int quantita = await _context.Badges.Where(x => x.IdPerson == peopleid).CountAsync();
+            List<PopulateBadge> badges = new List<PopulateBadge>();
+            List<BadgesViewModel> badge = new List<BadgesViewModel>();
+            badges = await _context.Badges.Where(x => x.IdPerson == peopleid).Skip(skip).Take(take).ToListAsync();
+            
+            result.Skip = skip;
 
-//            var populateBadge = await _context.Badges
-//                .Include(p => p.Person)
-//                .SingleOrDefaultAsync(m => m.NomeBadge == id);
-//            if (populateBadge == null)
-//            {
-//                return NotFound();
-//            }
+            result.Count = badges.Count();
+            int Countgiri = 0;
 
-//            return View(populateBadge);
-//        }
+            if (result.Count % 6 == 0)
+            {
+                Countgiri = (result.Count / 6) - 1;
+            }
+            else
+            {
+                Countgiri = (result.Count / 6);
+            }
+            result.Count = Countgiri;            
+            foreach (var p in badges)
+            {
+                BadgesViewModel pv = new BadgesViewModel()
+                {
+                    NomeBadge = p.NomeBadge,
+                    IdPerson = p.IdPerson
+                };
+                result.Data.Add(pv);
+            }
+            ViewBag.IdPerson = peopleid;
+            return View(result);
+        }
 
-//        // GET: PopulateBadges/Create
-//        public IActionResult Create()
-//        {
-//            ViewData["IdPerson"] = new SelectList(_context.People, "IdPerson", "IdPerson");
-//            return View();
-//        }
+        // GET: PopulateBadges/Details/5
+        public async Task<IActionResult> Details(string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+            {
+                return NotFound();
+            }
 
-//        // POST: PopulateBadges/Create
-//        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-//        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create([Bind("NomeBadge,IdPerson")] PopulateBadge populateBadge)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                _context.Add(populateBadge);
-//                await _context.SaveChangesAsync();
-//                return RedirectToAction("Index");
-//            }
-//            ViewData["IdPerson"] = new SelectList(_context.People, "IdPerson", "IdPerson", populateBadge.IdPerson);
-//            return View(populateBadge);
-//        }
+            var populateBadge = await _context.Badges
+                .Include(p => p.Person)
+                .SingleOrDefaultAsync(m => m.NomeBadge ==Id);
+            if (populateBadge == null)
+            {
+                return NotFound();
+            }
 
-//        // GET: PopulateBadges/Edit/5
-//        public async Task<IActionResult> Edit(string? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+            return View(populateBadge);
+        }
 
-//            var populateBadge = await _context.Badges.SingleOrDefaultAsync(m => m.NomeBadge == id);
-//            if (populateBadge == null)
-//            {
-//                return NotFound();
-//            }
-//            ViewData["IdPerson"] = new SelectList(_context.People, "IdPerson", "IdPerson", populateBadge.IdPerson);
-//            return View(populateBadge);
-//        }
+        // GET: PopulateBadges/Create
+        public IActionResult Create(int idperson)
+        {
+            ViewBag.IdPerson = idperson;
+            return View();
+        }
 
-//        // POST: PopulateBadges/Edit/5
-//        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-//        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(string id, [Bind("NomeBadge,IdPerson")] PopulateBadge populateBadge)
-//        {
-//            if (id != populateBadge.NomeBadge)
-//            {
-//                return NotFound();
-//            }
+        // POST: PopulateBadges/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(BadgesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var newswipes = Mapper.Map<PopulateBadge>(model);
+                _context.Add(newswipes);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
 
-//            if (ModelState.IsValid)
-//            {
-//                try
-//                {
-//                    _context.Update(populateBadge);
-//                    await _context.SaveChangesAsync();
-//                }
-//                catch (DbUpdateConcurrencyException)
-//                {
-//                    if (!PopulateBadgeExists(populateBadge.NomeBadge))
-//                    {
-//                        return NotFound();
-//                    }
-//                    else
-//                    {
-//                        throw;
-//                    }
-//                }
-//                return RedirectToAction("Index");
-//            }
-//            ViewData["IdPerson"] = new SelectList(_context.People, "IdPerson", "IdPerson", populateBadge.IdPerson);
-//            return View(populateBadge);
-//        }
+        // GET: PopulateBadges/Edit/5
+        public async Task<IActionResult> Edit(string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+            {
+                return NotFound();
+            }
 
-//        // GET: PopulateBadges/Delete/5
-//        public async Task<IActionResult> Delete(string? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+            var badge = await _context.Badges.SingleOrDefaultAsync(m => m.NomeBadge == Id);
+            BadgesViewModel model = Mapper.Map<BadgesViewModel>(badge);
+            ViewBag.IdPerson = Id;
+            if (badge == null)
+            {
+                return NotFound();
+            }
 
-//            var populateBadge = await _context.Badges
-//                .Include(p => p.Person)
-//                .SingleOrDefaultAsync(m => m.NomeBadge == id);
-//            if (populateBadge == null)
-//            {
-//                return NotFound();
-//            }
+            return View(model);
+        }
 
-//            return View(populateBadge);
-//        }
+        // POST: PopulateBadges/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string Id, BadgesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var badge = await _context.Badges.SingleAsync(x => x.NomeBadge == Id);
+                Mapper.Map(model, badge);
 
-//        // POST: PopulateBadges/Delete/5
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(string id)
-//        {
-//            var populateBadge = await _context.Badges.SingleOrDefaultAsync(m => m.NomeBadge == id);
-//            _context.Badges.Remove(populateBadge);
-//            await _context.SaveChangesAsync();
-//            return RedirectToAction("Index");
-//        }
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
 
-//        private bool PopulateBadgeExists(string id)
-//        {
-//            return _context.Badges.Any(e => e.NomeBadge == id);
-//        }
-//    }
-//}
+            return View(model);
+        }
+
+        // GET: PopulateBadges/Delete/5
+        public async Task<IActionResult> Delete(string Id)
+        {
+            if (string.IsNullOrEmpty(Id))
+            {
+                return NotFound();
+            }
+
+            var populateBadge = await _context.Badges
+                .Include(p => p.Person)
+                .SingleOrDefaultAsync(m => m.NomeBadge == Id);
+            if (populateBadge == null)
+            {
+                return NotFound();
+            }
+
+            return View(populateBadge);
+        }
+
+        // POST: PopulateBadges/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string Id)
+        {
+            var populateBadge = await _context.Badges.SingleOrDefaultAsync(m => m.NomeBadge == Id);
+            _context.Badges.Remove(populateBadge);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        private bool PopulateBadgeExists(string Id)
+        {
+            return _context.Badges.Any(e => e.NomeBadge == Id);
+        }
+    }
+}

@@ -19,6 +19,8 @@ namespace Badge.EF.Entity
 
         public string selnomebadge;
 
+        public int IdPerson;
+
         public string MachineName { get; set; }
         [ForeignKey("MachineName")]
         public Machine Machine { get; set; }

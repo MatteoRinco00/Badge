@@ -27,22 +27,37 @@ namespace Badge.Web.Controllers
         {
             PaginationViewModel<SwipesViewModel> result = new PaginationViewModel<SwipesViewModel>(); 
             //int quantita = await _context.Swipe.CountAsync();
-            List<Swipe> person = new List<Swipe>();
-            int quantitatot = await _context.Swipe.CountAsync();
+            List<Swipe> swipes = new List<Swipe>();
+            int Countgiri = 0;
+            int quantitatot = await _context.Swipe
+                .Where(x => x.Badge.IdPerson == peopleid)
+                .CountAsync();
 
             int quantita = await _context.Swipe
                 .Where(x => x.Badge.IdPerson == peopleid)
                 .CountAsync();
-            person = await _context.Swipe
-                .Skip(skip).Take(take)
+            swipes = await _context.Swipe
                 .Include(x => x.Badge)
                 .Where(x => x.Badge.IdPerson == peopleid)
+                .Skip(skip).Take(take)
                 .ToListAsync();
 
-            result.countotale = quantitatot;
             result.Count = quantita;
             result.Skip = skip;
-            foreach (var p in person)
+            if (result.Count % 6 == 0)
+            {
+                Countgiri = (result.Count / 6) - 1;
+            }
+            else
+            {
+                Countgiri = (result.Count / 6);
+            }
+
+            result.Count = Countgiri;
+
+            
+            
+            foreach (var p in swipes)
             {
                 SwipesViewModel pv = new SwipesViewModel()
                 {
@@ -68,6 +83,11 @@ namespace Badge.Web.Controllers
                 return NotFound();
             }
 
+            int idPerson = await _context.Swipe
+               .Where(m => m.IdSwipe == id)
+               .Select(p => p.Badge.IdPerson)
+               .FirstOrDefaultAsync();
+
             var swipe = await _context.Swipe
                 .Include(s => s.Badge)
                 .Include(s => s.Machine)
@@ -76,6 +96,8 @@ namespace Badge.Web.Controllers
             {
                 return NotFound();
             }
+
+            swipe.IdPerson = idPerson;
 
             return View(swipe);
         }
@@ -117,8 +139,13 @@ namespace Badge.Web.Controllers
             }
 
             var swipe = await _context.Swipe.SingleOrDefaultAsync(m => m.IdSwipe == id);
+            int idPerson = await _context.Swipe
+                .Where(m => m.IdSwipe == id)
+                .Select(p => p.Badge.IdPerson )
+                .FirstOrDefaultAsync();
 
             SwipesViewModel model = Mapper.Map<SwipesViewModel>(swipe);
+            model.IdPerson = idPerson;
 
             if (swipe == null)
             {
@@ -161,6 +188,11 @@ namespace Badge.Web.Controllers
                 return NotFound();
             }
 
+            int idPerson = await _context.Swipe
+                .Where(m => m.IdSwipe == id)
+                .Select(p => p.Badge.IdPerson)
+                .FirstOrDefaultAsync();
+
             var swipe = await _context.Swipe
                 .Include(s => s.Badge)
                 .Include(s => s.Machine)
@@ -169,6 +201,8 @@ namespace Badge.Web.Controllers
             {
                 return NotFound();
             }
+
+            swipe.IdPerson = idPerson;
 
             return View(swipe);
         }

@@ -14,6 +14,7 @@ using Badge.EF.Entity;
 using Badge.Web.Models.People;
 using Badge.Web.Models.Machines;
 using Badge.Web.Models.Swipes;
+using Badge.Web.Models.Badges;
 
 namespace Badge.Web
 {
@@ -72,6 +73,8 @@ namespace Badge.Web
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Person, PeopleViewModel>().ReverseMap();
+
+                cfg.CreateMap<PopulateBadge, BadgesViewModel>().ReverseMap();
 
                 cfg.CreateMap<Machine, MachinesViewModel>()
                 .ForMember(dest => dest.Nome, opt => opt.ResolveUsing(origin => origin.Name))

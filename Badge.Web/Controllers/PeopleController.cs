@@ -18,7 +18,6 @@ namespace Badge.Web.Controllers
     public class PeopleController : Controller
     {
         private readonly BadgeContext _context;
-        private object Cont;
 
         public PeopleController(BadgeContext context)
         {
@@ -88,30 +87,32 @@ namespace Badge.Web.Controllers
 
             PaginationViewModel<BadgesViewModel> result = new PaginationViewModel<BadgesViewModel>();
 
-            int quantita = await _context.Badges.CountAsync();
-            List<PopulateBadge> person = new List<PopulateBadge>();
+            int quantita = await _context.Badges.Where(x => x.IdPerson == peopleid).CountAsync();
+            List<PopulateBadge> badges = new List<PopulateBadge>();
             List<BadgesViewModel> badge = new List<BadgesViewModel>();
-            person = await _context.Badges.Skip(skip).Take(take).ToListAsync();
+            badges = await _context.Badges.Where( x => x.IdPerson ==peopleid).Skip(skip).Take(take).ToListAsync();
+
 
             result.Skip = skip;
-            result.Count = quantita;
-            int Count1 = 0;
+
+            result.Count = badges.Count();
+            int Countgiri = 0;
 
             if (result.Count % 6 == 0)
             {
-                Count1 = (result.Count / 6) - 1;
+                Countgiri = (result.Count / 6) - 1;
             }
             else
             {
-                Count1 = (result.Count / 6);
+                Countgiri = (result.Count / 6);
             }
 
 
-            result.Count = Count1;
+            result.Count = Countgiri;
 
             
 
-            foreach (var p in person)
+            foreach (var p in badges)
             {
                 BadgesViewModel pv = new BadgesViewModel()
                 {
@@ -119,11 +120,7 @@ namespace Badge.Web.Controllers
                     IdPerson = p.IdPerson
                 };
 
-                if (peopleid==pv.IdPerson)
-                {
                     result.Data.Add(pv);
-                }
-
                 
             }
             return View(result);

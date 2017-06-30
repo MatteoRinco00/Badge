@@ -11,10 +11,12 @@ namespace Badge.EF.Entity
     public class PopulateBadge
     {
         [Key]
+        [Display(Name = "Nome Badge")]
         public string NomeBadge { get; set; }
 
         public List<Swipe> Swipes { get; set; } = new List<Swipe>();
 
+        [Display(Name = "Id Persona")]
         public int IdPerson { get; set; }
         //public bool Idperson { get; set; }
         [ForeignKey("IdPerson")]

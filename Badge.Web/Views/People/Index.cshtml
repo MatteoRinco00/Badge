@@ -10,7 +10,7 @@
 <h2>@ViewData["Title"]</h2>
 <a asp-action="Create">
 
-    <a asp-action="Create" class="btn-floating btn-large waves-effect waves-light #26a69" data-position="bottom" data-delay="50" data-tooltip="Create New"><i class="material-icons">add</i></a>
+    <a asp-action="Create" class="btn-floating btn-large waves-effect waves-light #F0180A" data-position="bottom" data-delay="50" data-tooltip="Create New"><i class="material-icons">add</i></a>
 
 </a>
 @*<table class="table table-hover ">
@@ -76,7 +76,7 @@
 @for (int i = 0; i < Model.Data.Count; i++)
 {
     PeopleViewModel item = Model.Data.ElementAt(i);
-    @if( i % 3 == 0 || i == 0){
+    @if (i % 3 == 0 || i == 0) {
         <text><div class="row"></text>
     }
     <div class="col s4">
@@ -91,8 +91,8 @@
                             @if (item.Nome.Length + item.Cognome.Length > 23)
                             {
                                 string tot = item.Nome + " " + item.Cognome;
-                                @(tot.Substring(0,21) + "\n"+(tot.Substring(22, (tot.Length) - 22)))
-                                
+                                @(tot.Substring(0, 21) + "\n" + (tot.Substring(22, (tot.Length) - 22)))
+
                             }
                             else
                             {
@@ -104,12 +104,12 @@
                     <div class="col s2">
                         <div style="position: relative; height: 70px;">
                             <div class="fixed-action-btn" style="position: absolute; right: 24px;">
-                                <a class="btn-floating btn-large red">
+                                <a class="btn-floating btn-large #186BEA">
                                     <i class="large material-icons">mode_edit</i>
                                 </a>
                                 <ul>
                                     <li>  <a asp-action="Delete" asp-route-id="@item.IdPerson">
-                                        <botton class="btn-floating red" data-position="bottom" data-delay="50" data-tooltip="Delete">
+                                        <botton class="btn-floating F0180A" data-position="bottom" data-delay="50" data-tooltip="Delete">
                                         <i class="material-icons">
                                             delete
                                             </i>
@@ -118,7 +118,7 @@
                                     </li>
                                     <li>
                                         <a asp-action="Details" asp-route-id="@item.IdPerson">
-                                            <botton class="btn-floating red" data-position="bottom" data-delay="50" data-tooltip="Details">
+                                            <botton class="btn-floating #F0180A" data-position="bottom" data-delay="50" data-tooltip="Details">
                                                 <i class="material-icons">
                                                     pageview
                                                 </i>
@@ -127,7 +127,7 @@
                                     </li>
                                     <li>
                                         <a asp-action="Edit" asp-route-id="@item.IdPerson">
-                                            <botton class="btn-floating red" data-position="bottom" data-delay="50" data-tooltip="Details">
+                                            <botton class="btn-floating #F0180A" data-position="bottom" data-delay="50" data-tooltip="Details">
                                                 <i class="material-icons">
                                                     border_color
                                                 </i>
@@ -138,12 +138,21 @@
                             </div>
                         </div>
                     </div>
+                    <p> @("  "+item.Professione)</p>
                 </div>
-                <p>@item.Professione</p>
+                
             </div>
             <div class="card-action">
-                <a asp-area="" asp-controller="People" asp-action="Badge_people" asp-route-peopleid="@(item.IdPerson)">Badge</a>
-                <a asp-area="" asp-controller="Swipes" asp-action="Index" asp-route-peopleid="@(item.IdPerson)">Swipes</a>
+                @if (item.CountBadge == 0)
+                {
+                    <h3></h3>
+                }
+                else
+                {
+                    <a asp-area="" asp-controller="PopulateBadges" asp-action="Index" asp-route-peopleid="@(item.IdPerson)">Badge</a>
+                    <a asp-area="" asp-controller="Swipes" asp-action="Index" asp-route-peopleid="@(item.IdPerson)">Swipes </a>
+                }
+                
             </div>
         </div>
     </div>
