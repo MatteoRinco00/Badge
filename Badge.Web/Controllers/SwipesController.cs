@@ -68,8 +68,14 @@ namespace Badge.Web.Controllers
                     NomeBadge = p.NomeBadge,
                     IdPerson = p.Badge.IdPerson
                 };
-                result.Data.Add(pv);               
+                result.Data.Add(pv);
+
+                ViewBag.IdPerson = peopleid;
+                ViewBag.NomeBadge = p.NomeBadge;
+                ViewBag.MachineName = p.MachineName;
             }
+
+            
 
             return View(result);
         
@@ -103,10 +109,11 @@ namespace Badge.Web.Controllers
         }
 
         // GET: Swipes/Create
-        public IActionResult Create()
+        public IActionResult Create(int idperson, string machinename, string nomebadge)
         {
-            ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge");
-            ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name");
+            ViewBag.IdPerson = idperson;
+            ViewBag.MachineName = machinename;
+            ViewBag.NomeBadge = nomebadge;
             return View();
         }
 
@@ -115,14 +122,18 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( SwipesViewModel model)
+        public async Task<IActionResult> Create( int idperson, SwipesViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var newswipes = Mapper.Map<Swipe>(model);
+                var badgeCurrent = await _context.FindAsync<PopulateBadge>(newswipes.NomeBadge);
+                var machineCurrent = await _context.FindAsync<Machine>(newswipes.MachineName);
+                newswipes.Badge = badgeCurrent;
+                newswipes.Machine = machineCurrent;
                 _context.Add(newswipes);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { peopleid = idperson });
             }
 
             //ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
@@ -162,15 +173,16 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, SwipesViewModel model)
+        public async Task<IActionResult> Edit(int id, int idperson, SwipesViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var swipe = await _context.Swipe.SingleAsync(x => x.IdSwipe == id);
                 Mapper.Map(model, swipe);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { peopleid = idperson });
             }
 
 
@@ -210,12 +222,12 @@ namespace Badge.Web.Controllers
         // POST: Swipes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int idperson)
         {
             var swipe = await _context.Swipe.SingleOrDefaultAsync(m => m.IdSwipe == id);
             _context.Swipe.Remove(swipe);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { peopleid = idperson });
         }
 
         private bool SwipeExists(int id)

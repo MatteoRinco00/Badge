@@ -90,14 +90,14 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BadgesViewModel model)
+        public async Task<IActionResult> Create(int idperson,BadgesViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var newswipes = Mapper.Map<PopulateBadge>(model);
                 _context.Add(newswipes);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { peopleid = idperson });
             }
             return View(model);
         }
@@ -126,7 +126,7 @@ namespace Badge.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string Id, BadgesViewModel model)
+        public async Task<IActionResult> Edit(string Id, int idperson,BadgesViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -134,7 +134,7 @@ namespace Badge.Web.Controllers
                 Mapper.Map(model, badge);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { peopleid = idperson });
             }
 
             return View(model);
@@ -148,6 +148,10 @@ namespace Badge.Web.Controllers
                 return NotFound();
             }
 
+            bool haveswipes = _context.Badges
+                .Where(m => m.NomeBadge == Id)
+                .Any(x => x.Swipes.Any());
+
             var populateBadge = await _context.Badges
                 .Include(p => p.Person)
                 .SingleOrDefaultAsync(m => m.NomeBadge == Id);
@@ -155,6 +159,7 @@ namespace Badge.Web.Controllers
             {
                 return NotFound();
             }
+            populateBadge.CanDelete = !haveswipes;
 
             return View(populateBadge);
         }
@@ -162,12 +167,12 @@ namespace Badge.Web.Controllers
         // POST: PopulateBadges/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string Id)
+        public async Task<IActionResult> DeleteConfirmed(string Id, int idperson)
         {
             var populateBadge = await _context.Badges.SingleOrDefaultAsync(m => m.NomeBadge == Id);
             _context.Badges.Remove(populateBadge);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { peopleid = idperson });
         }
 
         private bool PopulateBadgeExists(string Id)

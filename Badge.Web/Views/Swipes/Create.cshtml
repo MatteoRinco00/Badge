@@ -1,7 +1,7 @@
 @using Badge.Web.Models.Shared
 @using Badge.Web.Models.Swipes
 
-@model PaginationViewModel<SwipesViewModel>
+@model SwipesViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -15,34 +15,25 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Data.First().PosPersona" class="col-md-2 control-label"></label>
+            <label asp-for="PosPersona" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Data.First().PosPersona" class="form-control" />
-                <span asp-validation-for="Data.First().PosPersona" class="text-danger"></span>
+                <input asp-for=" PosPersona" class="form-control" />
+                <span asp-validation-for="PosPersona" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Data.First().Orario" class="col-md-2 control-label"></label>
+            <label asp-for=" Orario" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Data.First().Orario" class="form-control" />
-                <span asp-validation-for="Data.First().Orario" class="text-danger"></span>
+                <input asp-for=" Orario" class="form-control" />
+                <span asp-validation-for=" Orario" class="text-danger"></span>
             </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Data.First().NomeBadge" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="Data.First().NomeBadge" class="form-control" asp-items="ViewBag.NomeBadge"></select>
-            </div>
-        </div>
+        <input type="hidden" asp-for="NomeBadge" value="@ViewBag.NomeBadge" />
 
-        <div class="form-group">
-            <label asp-for="Data.First().MachineName" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select asp-for="Data.First().MachineName" class="form-control" asp-items="ViewBag.MachineName"></select>
-            </div>
-        </div>
+        <input type="hidden" asp-for="MachineName" value="@ViewBag.MachineName" />
 
+        <input type="hidden" asp-for="IdPerson" value="@ViewBag.IdPerson" /> 
         <div class="form-group">
             <div class="center-align">
                 <div class="col-md-offset-2 col-md-10">
@@ -57,7 +48,7 @@
 </form>
 
 <div>
-    <a asp-area="" asp-controller="Swipes" asp-action="Index" asp-route ="">
+    <a asp-area="" asp-controller="Swipes" asp-action="Index" asp-route-peopleid = "@ViewBag.IdPerson">
             <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">
                 <i class="material-icons">arrow_back</i>
             </button>

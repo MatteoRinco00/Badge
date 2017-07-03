@@ -10,7 +10,9 @@
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create" class="btn-floating btn-large waves-effect waves-light #26a69" data-position="bottom" data-delay="50" data-tooltip="Create New"><i class="material-icons">add</i></a>
+    <a asp-area="" asp-controller="Swipes" asp-action="Create" asp-route-idperson="@ViewBag.IdPerson" asp-route-machinename="@ViewBag.MachineName" asp-route-nomebadge ="@ViewBag.NomeBadge"
+       class="btn-floating btn-large waves-effect waves-light #26a69" data-position="bottom" data-delay="50" data-tooltip="Create New">
+    <i class="material-icons">add</i></a>
 </p>
 <table class="table">
     <thead>
@@ -46,7 +48,7 @@
                 @Html.DisplayFor(modelItem => item.MachineName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdSwipe">
+                <a asp-action="Edit" asp-route-id="@item.IdSwipe" asp-route-idperson="@ViewBag.IdPerson">
                     <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Edit">
                         <i class="material-icons">border_color</i>
                     </button>
@@ -57,7 +59,7 @@
                     </button>
                 </a>
 
-                <a asp-action="Delete" asp-route-id="@item.IdSwipe">
+                <a asp-action="Delete" asp-route-id="@item.IdSwipe" asp-route-idperson="@ViewBag.IdPerson">
                     <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete">
                         <i class="large material-icons">delete</i>
                     </button>

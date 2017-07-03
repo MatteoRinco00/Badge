@@ -47,7 +47,7 @@
             </button>
         </a>
 
-
+        <input type="hidden" asp-for="IdPerson" value="@Model.IdPerson" /> 
 
         <a asp-action="Index" asp-route-peopleid="@Model.IdPerson">
             <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">

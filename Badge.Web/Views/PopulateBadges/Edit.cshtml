@@ -21,13 +21,13 @@
         
         <input type="hidden" asp-for="IdPerson" value="@Model.IdPerson" />
         <div class="form-group">
-            <a asp-action="Edit">
+            @*<a asp-action="Edit">*@
                 <div class="center-align">
-                    <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Save">
+                    <button type="submit" class="btn tooltipped disabled" data-position="bottom" data-delay="50" data-tooltip="Save">
                         <i class="large material-icons">save</i>
                 </div>
                 </button>
-            </a>
+            @*</a>*@
         </div>
     </div>
 </form>

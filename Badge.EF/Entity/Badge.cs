@@ -14,6 +14,8 @@ namespace Badge.EF.Entity
         [Display(Name = "Nome Badge")]
         public string NomeBadge { get; set; }
 
+        public bool CanDelete;
+
         public List<Swipe> Swipes { get; set; } = new List<Swipe>();
 
         [Display(Name = "Id Persona")]

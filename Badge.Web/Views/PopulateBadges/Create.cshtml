@@ -13,17 +13,25 @@
     <div class="form-horizontal">
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="col-md-10">
-            <input asp-for="NomeBadge" class="form-control" />
-            <span asp-validation-for="NomeBadge" class="text-danger"></span>
-        </div>
-        <input type="hidden" asp-for="IdPerson" value="@ViewBag.IdPerson" />        
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <label asp-for="NomeBadge" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="NomeBadge" class="form-control" />
+                <span asp-validation-for="NomeBadge" class="text-danger"></span>
             </div>
         </div>
-    </div>
+            <input type="hidden" asp-for="IdPerson" value="@ViewBag.IdPerson" />
+            <div class="form-group">
+                <div class="center-align">
+                    <div class="col-md-offset-2 col-md-10">
+
+                        <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Create">
+                            <i class="material-icons">add_circle_outline</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </form>
 
 <div>

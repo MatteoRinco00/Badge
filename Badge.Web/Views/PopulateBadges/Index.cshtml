@@ -42,7 +42,7 @@
                 </td>
 
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.NomeBadge">
+                    <a asp-action="Edit" asp-route-id="@item.NomeBadge" asp-route-idperson ="@item.IdPerson">
                         <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Edit">
                             <i class="material-icons">border_color</i>
                         </button>
@@ -54,7 +54,7 @@
                         </button>
                     </a>
 
-                    <a asp-action="Delete" asp-route-id="@item.NomeBadge">
+                    <a asp-action="Delete" asp-route-id="@item.NomeBadge" asp-route-idperson ="@item.IdPerson">
                         <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete">
                             <i class="large material-icons">delete</i>
                         </button>
@@ -70,6 +70,13 @@
 </table>
 <div>
     <br />
+</div>
+
+<a asp-area="" asp-controller="People" asp-action="Index">
+    <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">
+        <i class="material-icons">arrow_back</i>
+    </button>
+</a>
 </div>
 
 
