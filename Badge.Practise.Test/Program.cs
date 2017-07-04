@@ -50,8 +50,7 @@ namespace Badge.Practise.Test
             db.People.Add(persona9);
             db.People.Add(persona10);
             db.People.Add(persona11);
-
-
+            
             db.SaveChanges();
 
             PopulateMachine m = new PopulateMachine();

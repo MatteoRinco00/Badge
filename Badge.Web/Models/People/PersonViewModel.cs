@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,7 +23,10 @@ namespace Badge.Web.Models.People
         [StringLength(40)]
         public string Professione { get; set; }
 
+        public string Uri { get; set; }
 
+        public IFormFile AvatarImage { get; set; }
+        
         [Display(Name = "Numero badge")]
         public int CountBadge { get; set; }
     }

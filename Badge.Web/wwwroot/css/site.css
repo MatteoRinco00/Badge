@@ -29,11 +29,18 @@ nav {
 }
 
 
-div.card-image.waves-effect.waves-block.waves-light {
+/*div.card-image.waves-effect.waves-block.waves-light {
     height : 80%;
     width : 80%;
     margin-left : 10%;
+}*/
+
+div.card-image.waves-effect.waves-block.waves-light {
+    height : 320px;
+    width : 295px;
+    margin-left : 10%;
 }
+
 
 botton.btn.tooltipped {
     opacity : 0.1;
@@ -48,6 +55,16 @@ div.popout {
 
 div.jumbotron {
     height  : 100%;
+}
+
+img.active-img{
+    max-height : 300px;
+    max-width : 295px;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating) {
+    color: #0d47a1;
+    transition: color .3s ease;
 }
 
 

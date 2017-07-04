@@ -15,6 +15,7 @@ using Badge.Web.Models.People;
 using Badge.Web.Models.Machines;
 using Badge.Web.Models.Swipes;
 using Badge.Web.Models.Badges;
+using Badge.Web.Services;
 
 namespace Badge.Web
 {
@@ -36,9 +37,12 @@ namespace Badge.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc();            
             string connectionString = "Server=(localdb)\\mssqllocaldb;Database=Badge;Trusted_Connection=True;MultipleActiveResultSets=true";
             services.AddDbContext<BadgeContext>(options => options.UseSqlServer(connectionString));
+
+            string blobConnectionString = Configuration["AzureStorage:ConnectionString"];
+            services.AddScoped<IUploadBlob, UploadBlob>(c => new UploadBlob(blobConnectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,7 +76,9 @@ namespace Badge.Web
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.CreateMap<Person, PeopleViewModel>().ReverseMap();
+                cfg.CreateMap<Person, PeopleViewModel>()
+                .ForMember(dest => dest.AvatarImage, opt => opt.Ignore())
+                .ReverseMap(); 
 
                 cfg.CreateMap<PopulateBadge, BadgesViewModel>().ReverseMap();
 

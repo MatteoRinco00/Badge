@@ -82,7 +82,15 @@
     <div class="col s4">
         <div class="card sticky-action">
             <div class="card-image waves-effect waves-block waves-light">
-                <img class="activator" src="~/images/figurina1.jpg">
+                @if (item.Uri == null)
+                {
+                    <img class="responsive-img active-img" src="https://badge.blob.core.windows.net/images/default/senza_foto.jpg">
+                }
+                else
+                {
+                    <img class="responsive-img active-img" src="@item.Uri">
+                }
+
             </div>
             <div class="card-content">
                 <div class="row">

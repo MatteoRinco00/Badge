@@ -12,16 +12,18 @@ using Badge.Web.Models.People;
 using AutoMapper;
 using Badge.Web.Models;
 using Badge.Web.Models.Badges;
+using Badge.Web.Services;
 
 namespace Badge.Web.Controllers
 {
     public class PeopleController : Controller
     {
         private readonly BadgeContext _context;
-
-        public PeopleController(BadgeContext context)
+        private readonly IUploadBlob _uploadBlobService;
+        public PeopleController(BadgeContext context, IUploadBlob uploadBlobService)
         {
-            _context = context;    
+            _context = context;
+            _uploadBlobService = uploadBlobService;
         }
 
 
@@ -68,6 +70,7 @@ namespace Badge.Web.Controllers
                     Cognome = p.Cognome,
                     Nome = p.Nome,
                     Professione = p.Professione,
+                    Uri = p.Uri,
                     IdPerson = p.IdPerson
                 };
 
@@ -158,13 +161,27 @@ namespace Badge.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PeopleViewModel model)
         {
-
-
             if (ModelState.IsValid)
             {
+
                 var newperson = Mapper.Map<Person>(model);
                 _context.Add(newperson);
                 await _context.SaveChangesAsync();
+
+                byte[] result = null;
+                using (var memoryStream = new System.IO.MemoryStream())
+                {
+                    await model.AvatarImage.CopyToAsync(memoryStream);
+                    result = memoryStream.ToArray();
+                }
+
+                newperson.Uri = await _uploadBlobService.UploadFile(result, $"{newperson.IdPerson}/{model.AvatarImage.FileName}");
+
+                await _context.SaveChangesAsync();
+
+
+
+
                 return RedirectToAction("Index");
             }
 

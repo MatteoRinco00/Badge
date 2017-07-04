@@ -9,7 +9,6 @@ namespace Badge.Web.Models.Register
     public class RegisterViewModel
     {
         public IFormFile AvatarImage { get; set; }
-        public object Email { get; internal set; }
     }
 
 }
