@@ -71,6 +71,7 @@ namespace Badge.Web.Controllers
                     Nome = p.Nome,
                     Professione = p.Professione,
                     Uri = p.Uri,
+                    Array = p.Array,
                     IdPerson = p.IdPerson
                 };
 
