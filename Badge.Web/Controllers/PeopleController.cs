@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Badge.EF;
-using Badge.EF.Entity;
 using Badge.Web.Models.Shared;
 using Badge.Web.Models.People;
 using AutoMapper;
 using Badge.Web.Models;
 using Badge.Web.Models.Badges;
 using Badge.Web.Services;
+using Badge.EF;
+using Badge.EF.Entity;
 
 namespace Badge.Web.Controllers
 {

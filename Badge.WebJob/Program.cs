@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.ServiceBus.Messaging;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -9,10 +11,12 @@ namespace IoTHub.Server
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            string connectionString = ConfigurationManager.AppSettings["IoTHub"];
-            AscoltatoreDispositivi sender = new AscoltatoreDispositivi(connectionString);            
+            /*IoTHub*/
+            string connectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
+            AscoltatoreDispositivi sender = new AscoltatoreDispositivi("HostName=badge.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=vKf7NMeqQYMnYSrumKvOL/DuEgN6//krOUfZHI8JUw4=");            
             var tasks = new List<Task>();
             foreach (string partition in sender.HubClient.GetRuntimeInformation().PartitionIds)
             {

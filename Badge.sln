@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Badge.EF", "Badge.EF\Badge.EF.csproj", "{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Badge.Practise.Test", "Badge.Practise.Test\Badge.Practise.Test.csproj", "{7C86234E-962C-4EB2-87CC-810D4E316C19}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Badge.Web", "Badge.Web\Badge.Web.csproj", "{5D7C4734-88C5-4E25-89AF-2C01211C7AC6}"
@@ -14,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFIDReader", "..\..\..\..\..\..\Downloads\RFIDReader\RFIDReader\RFIDReader.csproj", "{4979A8F1-8A77-40B0-A85D-75978DDB6B4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Badge.WebJob", "Badge.WebJob\Badge.WebJob.csproj", "{917B7F95-9974-4509-894C-99D368D4478F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Badge.EF", "Badge.EF\Badge.EF.csproj", "{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,22 +27,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|ARM.Build.0 = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|x64.Build.0 = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Debug|x86.Build.0 = Debug|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|ARM.ActiveCfg = Release|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|ARM.Build.0 = Release|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|x64.ActiveCfg = Release|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|x64.Build.0 = Release|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|x86.ActiveCfg = Release|Any CPU
-		{EDC8DF77-9ECB-4FBC-81CE-10DBE0194F42}.Release|x86.Build.0 = Release|Any CPU
 		{7C86234E-962C-4EB2-87CC-810D4E316C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C86234E-962C-4EB2-87CC-810D4E316C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C86234E-962C-4EB2-87CC-810D4E316C19}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -127,6 +111,22 @@ Global
 		{917B7F95-9974-4509-894C-99D368D4478F}.Release|x64.Build.0 = Release|Any CPU
 		{917B7F95-9974-4509-894C-99D368D4478F}.Release|x86.ActiveCfg = Release|Any CPU
 		{917B7F95-9974-4509-894C-99D368D4478F}.Release|x86.Build.0 = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|ARM.Build.0 = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|x64.Build.0 = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Debug|x86.Build.0 = Debug|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|ARM.Build.0 = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|x64.ActiveCfg = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|x64.Build.0 = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|x86.ActiveCfg = Release|Any CPU
+		{FFE9AE47-4C25-425E-8C7B-B8265FB2B8A2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

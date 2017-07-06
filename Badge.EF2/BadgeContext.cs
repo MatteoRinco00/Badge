@@ -23,6 +23,16 @@ namespace Badge.EF
         {
             base.OnConfiguring(optionsBuilder);
         }
+
+        public Task addAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

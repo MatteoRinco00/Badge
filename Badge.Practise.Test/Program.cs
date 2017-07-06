@@ -1,9 +1,9 @@
-﻿using Badge.EF.Entity;
-using System.Text;
+﻿using System.Text;
 using System;
 using System.Collections.Generic;
-using Badge.EF;
 using Microsoft.EntityFrameworkCore;
+using Badge.EF.Entity;
+using Badge.EF;
 
 namespace Badge.Practise.Test
 {
