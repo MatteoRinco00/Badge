@@ -1,5 +1,8 @@
 ﻿using Badge.EF;
+using Badge.EF.Entity;
+using Badge.Practise.Test;
 using Badge.WebJob.Entity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
 using System;
@@ -21,6 +24,7 @@ namespace IoTHub.Server
         // Endopoint, di default, sul quale i dispositivi mandano al server l'ACK. 
         //private const string Feedback = "messages/servicebound/feedback";
 
+        public BadgeContext context;
         public EventHubClient HubClient { get; set; }
         private string _connectionString;
         //private MittenteServer _serverSender;
@@ -33,6 +37,9 @@ namespace IoTHub.Server
 
             HubClient = EventHubClient.CreateFromConnectionString(connectionString, EndPointServer);
             //_serverSender = new MittenteServer(_connectionString);
+            DbContextOptionsBuilder<BadgeContext> option = new DbContextOptionsBuilder<BadgeContext>(new DbContextOptions<BadgeContext>());
+            option.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Badge;Trusted_Connection=True;MultipleActiveResultSets=true");
+            context = new BadgeContext(option.Options);
         }
 
         /// <summary>
@@ -48,9 +55,10 @@ namespace IoTHub.Server
         /// </remarks>
         /// 
 
-        private readonly BadgeContext _context;
         public async Task RicezioneMessaggiDaDispositivi(string partitionId)
         {
+
+            
             var eventHubReceiver = HubClient.GetDefaultConsumerGroup().CreateReceiver(partitionId, DateTime.UtcNow);
             while (true)
             {
@@ -60,18 +68,68 @@ namespace IoTHub.Server
                 string data = Encoding.UTF8.GetString(eventData.GetBytes());
                 DataBadge nuovoDatoRicevuto = JsonConvert.DeserializeObject<DataBadge>(data);
 
-                //int thereisperson = _context.People
-                //    .Count(x => x.Array ==);
+                try
+                {
 
-                //if (thereisperson == 0)
-                //{
-                //    Console.WriteLine("Errore non esiste la persona");
-                //}
+                    //DataBadge swipe = new DataBadge
+                    //{
+                    //    Orario = nuovoDatoRicevuto.Orario,
+                    //    Id = nuovoDatoRicevuto.Id,
+                    //    Posizione = "Villafranca",
+                    //    MachineName = "8d453f1f-38cf-4ac8-ab8f-156e98db9fc5"
 
-                //else
-                //{
-                //    Console.WriteLine("La persona è presente");
-                //}
+                    //};
+                    
+
+                    bool thereisperson = context.Badges
+                    .Any(x => x.Array == nuovoDatoRicevuto.Id);
+
+                    if (!thereisperson)
+                    {
+                        Console.WriteLine("Errore non esiste la persona");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("La persona è presente");
+                        //context.Add(swipe);
+                        //await context.SaveChangesAsync();
+
+                        Badge.EF.Entity.PopulateBadge currentBadge = await context.Badges
+                            .Where(x => x.Array == nuovoDatoRicevuto.Id)
+                            .FirstOrDefaultAsync();
+                        
+                        Machine machine = context.Machines.Find("0f5b5ba5-a050-4ba6-a838-549aa0740eeb");
+
+                        Swipe swipe1 = new Swipe()
+                        {
+                            Badge = currentBadge,
+                            Machine = machine,
+                            NomeBadge = currentBadge.NomeBadge,
+                            MachineName = machine.Name,
+                            Orario = nuovoDatoRicevuto.Orario,
+                            PosPersona = nuovoDatoRicevuto.Posizione
+                        };
+                        context.Swipe.Add(swipe1);
+                        try
+                        {
+                            await context.SaveChangesAsync();
+                        }
+                        catch (Exception e)
+                        {
+
+                            throw;
+                        }
+                        
+                    }
+
+                }
+
+                catch
+                {
+                    Console.WriteLine("ciao");   
+
+                }
 
                 Console.WriteLine($"Dato scodato dal server: {nuovoDatoRicevuto}");
 

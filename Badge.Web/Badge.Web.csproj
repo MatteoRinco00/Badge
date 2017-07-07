@@ -30,5 +30,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Badge.EF\Badge.EF.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Badge.EF">
+      <HintPath>..\Badge.EF\bin\Debug\netstandard1.4\Badge.EF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

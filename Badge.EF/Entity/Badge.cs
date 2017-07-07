@@ -16,6 +16,8 @@ namespace Badge.EF.Entity
 
         public bool CanDelete;
 
+        public byte[] Array { get; set; }
+
         public List<Swipe> Swipes { get; set; } = new List<Swipe>();
 
         [Display(Name = "Id Persona")]

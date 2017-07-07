@@ -10,5 +10,9 @@ namespace Badge.WebJob.Entity
     {
         public DateTime Orario { get; set; }
         public byte[] Id { get; set; }
+        public string Posizione { get; set; }
+        public string MachineName { get; set; }
+        public string NomeBadge { get; set; }
+        public int IdSwipe { get; set; }
     }
 }

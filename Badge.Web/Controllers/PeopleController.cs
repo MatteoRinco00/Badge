@@ -11,8 +11,8 @@ using AutoMapper;
 using Badge.Web.Models;
 using Badge.Web.Models.Badges;
 using Badge.Web.Services;
-using Badge.EF;
 using Badge.EF.Entity;
+using Badge.EF;
 
 namespace Badge.Web.Controllers
 {

@@ -17,7 +17,6 @@ namespace Badge.EF.Entity
         public string Professione { get; set; }
         public string Cognome { get; set; }
         public string Uri { get; set; }
-        public byte[] Array { get; set; }
 
         public int CountBadge;
 
