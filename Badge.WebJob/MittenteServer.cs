@@ -1,5 +1,7 @@
-﻿using Microsoft.Azure.Devices;
+﻿using Badge.EF.Entity;
+using Microsoft.Azure.Devices;
 using Microsoft.Azure.Devices.Common.Exceptions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,12 +24,6 @@ namespace IoTHub.Server
             _serviceClient = ServiceClient.CreateFromConnectionString(connectionString);
         }
 
-        /// <summary>
-        /// Invio al device con richiesta di feedback
-        /// </summary>
-        /// <param name="deviceId"></param>
-        /// <param name="objectToSend"></param>
-        /// <returns></returns>
         public async Task InviaAsync(string deviceId, string objectToSend)
         {
             var commandMessage = new Message(Encoding.ASCII.GetBytes(objectToSend));
@@ -39,36 +35,17 @@ namespace IoTHub.Server
         }
 
         /// <summary>
-        /// Registrazione dell'ascoltatore dei feedback
-        /// </summary>
-        /// <param name="deviceId"></param>
-        /// <param name="objectToSend"></param>
-        /// <returns></returns>
-        public async Task AscoltaFeedbackAsync()
-        {
-            FeedbackReceiver<FeedbackBatch> feedback = _serviceClient.GetFeedbackReceiver();
-            while (true)
-            {
-                FeedbackBatch batch = await feedback.ReceiveAsync();
-                if (batch == null) continue;
-
-                foreach(var record in batch.Records)
-                {
-                    Console.WriteLine($"Feedback ricevuto: {record.OriginalMessageId} - {batch.UserId}");
-                }
-            }
-        }
-
-        /// <summary>
         /// Richiama un metodo registrato sul device.
         /// </summary>
         /// <param name="deviceId"></param>
         /// <returns></returns>
-        public async Task InvocaMetodoSulDevice(string deviceId)
+        public async Task InvocaMetodoSulDevice(string deviceId, Person person)
         {
             try
             {
                 CloudToDeviceMethod method = new CloudToDeviceMethod("MetodoInvocatoDaServer");
+                string personString = JsonConvert.SerializeObject(person);
+                method.SetPayloadJson(personString);
                 var result = await _serviceClient.InvokeDeviceMethodAsync(deviceId, method);
 
                 string jsonPayload = result.GetPayloadAsJson();

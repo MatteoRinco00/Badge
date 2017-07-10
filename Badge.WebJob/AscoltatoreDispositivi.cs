@@ -24,6 +24,8 @@ namespace IoTHub.Server
         // Endopoint, di default, sul quale i dispositivi mandano al server l'ACK. 
         //private const string Feedback = "messages/servicebound/feedback";
 
+
+        private MittenteServer _serverSender;
         public BadgeContext context;
         public EventHubClient HubClient { get; set; }
         private string _connectionString;
@@ -36,7 +38,7 @@ namespace IoTHub.Server
             _connectionString = connectionString;
 
             HubClient = EventHubClient.CreateFromConnectionString(connectionString, EndPointServer);
-            //_serverSender = new MittenteServer(_connectionString);
+            _serverSender = new MittenteServer(_connectionString);
             DbContextOptionsBuilder<BadgeContext> option = new DbContextOptionsBuilder<BadgeContext>(new DbContextOptions<BadgeContext>());
             option.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=Badge;Trusted_Connection=True;MultipleActiveResultSets=true");
             context = new BadgeContext(option.Options);
@@ -120,7 +122,24 @@ namespace IoTHub.Server
 
                             throw;
                         }
-                        
+
+                        Console.WriteLine($"Dato scodato dal server: {nuovoDatoRicevuto}");
+
+                        // Faccio scattare il metodo registrato dal device
+                        try
+                        {
+                            Person currentPerson = await context.People.FindAsync(currentBadge.IdPerson);
+                            currentPerson.Badge = null;
+
+                            await _serverSender.InvocaMetodoSulDevice("badgepi", currentPerson);
+                            string messageToSend = JsonConvert.SerializeObject(new DataBadge { Dispositivo = "badgepi" });
+                            //await _serverSender.InviaAsync("badgepi", messageToSend);
+                        }
+                        catch (Exception e)
+                        {
+
+                            throw;
+                        }
                     }
 
                 }
@@ -131,10 +150,8 @@ namespace IoTHub.Server
 
                 }
 
-                Console.WriteLine($"Dato scodato dal server: {nuovoDatoRicevuto}");
-
-                // Faccio scattare il metodo registrato dal device
-                //await _serverSender.InvocaMetodoSulDevice(nuovoDatoRicevuto.Dispositivo);
+               
+                
             }
         }
 

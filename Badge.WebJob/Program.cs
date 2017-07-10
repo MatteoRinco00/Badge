@@ -16,7 +16,7 @@ namespace IoTHub.Server
         {
             /*IoTHub*/
             string connectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
-            AscoltatoreDispositivi sender = new AscoltatoreDispositivi("HostName=badge.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=vKf7NMeqQYMnYSrumKvOL/DuEgN6//krOUfZHI8JUw4=");            
+            AscoltatoreDispositivi sender = new AscoltatoreDispositivi("HostName=badge.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=vKf7NMeqQYMnYSrumKvOL/DuEgN6//krOUfZHI8JUw4=");
             var tasks = new List<Task>();
             foreach (string partition in sender.HubClient.GetRuntimeInformation().PartitionIds)
             {
