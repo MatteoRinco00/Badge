@@ -24,7 +24,6 @@ namespace IoTHub.Server
         // Endopoint, di default, sul quale i dispositivi mandano al server l'ACK. 
         //private const string Feedback = "messages/servicebound/feedback";
 
-
         private MittenteServer _serverSender;
         public BadgeContext context;
         public EventHubClient HubClient { get; set; }
@@ -33,8 +32,6 @@ namespace IoTHub.Server
 
         public AscoltatoreDispositivi(string connectionString)
         {
-            //if (string.IsNullOrEmpty(connectionString))
-            //    throw new ArgumentNullException(nameof(connectionString));
             _connectionString = connectionString;
 
             HubClient = EventHubClient.CreateFromConnectionString(connectionString, EndPointServer);
@@ -72,17 +69,6 @@ namespace IoTHub.Server
 
                 try
                 {
-
-                    //DataBadge swipe = new DataBadge
-                    //{
-                    //    Orario = nuovoDatoRicevuto.Orario,
-                    //    Id = nuovoDatoRicevuto.Id,
-                    //    Posizione = "Villafranca",
-                    //    MachineName = "8d453f1f-38cf-4ac8-ab8f-156e98db9fc5"
-
-                    //};
-                    
-
                     bool thereisperson = context.Badges
                     .Any(x => x.Array == nuovoDatoRicevuto.Id);
 
@@ -96,9 +82,7 @@ namespace IoTHub.Server
                     else
                     {
                         Console.WriteLine("La persona è presente");
-                        //context.Add(swipe);
-                        //await context.SaveChangesAsync();
-
+                   
                         Badge.EF.Entity.PopulateBadge currentBadge = await context.Badges
                             .Where(x => x.Array == nuovoDatoRicevuto.Id)
                             .FirstOrDefaultAsync();
@@ -115,35 +99,17 @@ namespace IoTHub.Server
                             PosPersona = nuovoDatoRicevuto.Posizione
                         };
                         context.Swipe.Add(swipe1);
-                        try
-                        {
-                            await context.SaveChangesAsync();
-                        }
-                        catch (Exception e)
-                        {
-
-                            throw;
-                        }
+                        await context.SaveChangesAsync();
 
                         Console.WriteLine($"Dato scodato dal server: {nuovoDatoRicevuto}");
 
                         // Faccio scattare il metodo registrato dal device
-                        try
-                        {
-                            Person currentPerson = await context.People.FindAsync(currentBadge.IdPerson);
-                            currentPerson.Badge = null;
 
-                            string messageToSend = JsonConvert.SerializeObject(currentPerson);
-                            await _serverSender.InviaAsync("badgepi", messageToSend);
-                            
-                        }
-                        catch (Exception e)
-                        {
-
-                            throw;
-                        }
+                        Person currentPerson = await context.People.FindAsync(currentBadge.IdPerson);
+                        currentPerson.Badge = null;
+                        string messageToSend = JsonConvert.SerializeObject(currentPerson);
+                        await _serverSender.InviaAsync("badgepi", messageToSend);
                     }
-
                 }
 
                 catch
@@ -151,9 +117,7 @@ namespace IoTHub.Server
                     Console.WriteLine("ciao");   
 
                 }
-
-               
-                
+  
             }
         }
 

@@ -11,10 +11,8 @@ namespace IoTHub.Server
 {
     class Program
     {
-
         static void Main(string[] args)
         {
-            /*IoTHub*/
             string connectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
             AscoltatoreDispositivi sender = new AscoltatoreDispositivi("HostName=badge.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=A9AJoMmDSvwtdpvflTKXl6z3LJdhhwGH4VdCVNMHJMU=");
             var tasks = new List<Task>();

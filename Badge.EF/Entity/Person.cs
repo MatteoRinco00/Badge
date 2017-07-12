@@ -17,21 +17,9 @@ namespace Badge.EF.Entity
         public string Professione { get; set; }
         public string Cognome { get; set; }
         public string Uri { get; set; }
-
         public int CountBadge;
-
         public bool CanDelete;
-
         public List<PopulateBadge> Badge { get; set; } = new List<PopulateBadge>();
 
-        public Person()
-        {
-
-        }
-
-        public bool BadgeAny()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

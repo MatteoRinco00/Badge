@@ -11,13 +11,9 @@ namespace Badge.Practise.Test
         public Machine Populate(string ipMachine, string MacAddress)
         {
             Machine m = new Machine();
-
             m.IpMachine = ipMachine;
             m.MacAddress = MacAddress;
-
             return m;
         }
-
-
     }
 }

@@ -56,8 +56,6 @@ namespace RFIDReader
 
         private async Task ReadAsync()
         {
-           
-
             var mfrc = new Mfrc522();
             await mfrc.InitIOAsync();            
             await ResetAsync();
@@ -78,9 +76,8 @@ namespace RFIDReader
                                 Orario = DateTime.Now,
                                 Id = uid.FullUid,
                                 Posizione = "Villafranca"
-
                             };
-                            //ACCENSIONE LED BLUE
+
                             _pinBlueLed.SetDriveMode(GpioPinDriveMode.Output);
                             _pinBlueLed.Write(GpioPinValue.High);
                             

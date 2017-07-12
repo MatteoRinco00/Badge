@@ -8,7 +8,6 @@ namespace Badge.Web.Models.Machines
 {
     public class MachinesViewModel
     {
-
             [Key]
             public string Nome { get; set; }
 
@@ -19,9 +18,6 @@ namespace Badge.Web.Models.Machines
             [StringLength(18)]
             //[RegularExpression("[A-F]+[0-9]+'-'")]
             public string MacAddress { get; set; }
-
-
-
     }
 }
     

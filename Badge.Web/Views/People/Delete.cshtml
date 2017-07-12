@@ -28,9 +28,7 @@
         </dd>
     </dl>
 
-
     <form asp-action="Delete">
-
         @if (Model.CanDelete == true)
         {
             <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete">
@@ -44,13 +42,11 @@
             </button>
         }
 
-
         <a asp-action="Index">
             <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">
                 <i class="material-icons">arrow_back</i>
             </button>
         </a>
-
     </form>
 </div>
 

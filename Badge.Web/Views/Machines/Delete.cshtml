@@ -25,11 +25,9 @@
             @Html.DisplayFor(model => model.MacAddress)
         </dd>
     </dl>
-    
-    
+
         <form asp-action="Delete">
             
-                
             <a asp-action="Delete" asp-route-id="@Model.Name">
 
                 <button type="submit" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete">
@@ -37,8 +35,6 @@
                     <i class="large material-icons">delete</i>
                 </button>
             </a>
-                           
-
 
             <a asp-action="Index">
                 <button type="button" class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Back to List">

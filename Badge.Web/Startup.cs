@@ -90,11 +90,9 @@ namespace Badge.Web
                 cfg.CreateMap<Swipe, SwipesViewModel>()
                    .ForMember(dest => dest.IdPerson, opt => opt.Ignore())
                    .ReverseMap();
-
             });
 
             Mapper.AssertConfigurationIsValid();
-
         }
     }
 }

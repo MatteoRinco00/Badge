@@ -31,9 +31,7 @@ namespace Badge.Web.Controllers
             List<PopulateBadge> badges = new List<PopulateBadge>();
             List<BadgesViewModel> badge = new List<BadgesViewModel>();
             badges = await _context.Badges.Where(x => x.IdPerson == peopleid).Skip(skip).Take(take).ToListAsync();
-            
             result.Skip = skip;
-
             result.Count = badges.Count();
             int Countgiri = 0;
 
@@ -53,8 +51,10 @@ namespace Badge.Web.Controllers
                     NomeBadge = p.NomeBadge,
                     IdPerson = p.IdPerson
                 };
+
                 result.Data.Add(pv);
             }
+
             ViewBag.IdPerson = peopleid;
             return View(result);
         }
@@ -159,8 +159,8 @@ namespace Badge.Web.Controllers
             {
                 return NotFound();
             }
-            populateBadge.CanDelete = !haveswipes;
 
+            populateBadge.CanDelete = !haveswipes;
             return View(populateBadge);
         }
 

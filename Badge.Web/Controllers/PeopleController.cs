@@ -26,24 +26,16 @@ namespace Badge.Web.Controllers
             _uploadBlobService = uploadBlobService;
         }
 
-
-
         // GET: People
         public async Task<IActionResult> Index(int? id, int take = 6, int skip = 0)
         {
-
-            
             PaginationViewModel<PeopleViewModel> result = new PaginationViewModel<PeopleViewModel>();
-
             int quantita = await _context.People.CountAsync();
             List<Person> person = new List<Person>();
             person = await _context.People.Skip(skip).Take(take).ToListAsync();
-            
             result.Skip = skip;
             result.Count = quantita;
             int Count1 = 0;
-
-            
 
             if (result.Count % 6 == 0)
             {
@@ -53,10 +45,8 @@ namespace Badge.Web.Controllers
             {
                 Count1 = (result.Count / 6);
             }
-
             
             result.Count = Count1;
-
             var personBadge = await _context.People
                    .Skip(skip)
                    .Take(take)
@@ -71,7 +61,6 @@ namespace Badge.Web.Controllers
                     Nome = p.Nome,
                     Professione = p.Professione,
                     Uri = p.Uri,
-                    Array = p.Array,
                     IdPerson = p.IdPerson
                 };
 
@@ -87,18 +76,12 @@ namespace Badge.Web.Controllers
         // GET: People
         public async Task<IActionResult> Badge_people (int peopleid, int take = 6, int skip = 0)
         {
-
-
             PaginationViewModel<BadgesViewModel> result = new PaginationViewModel<BadgesViewModel>();
-
             int quantita = await _context.Badges.Where(x => x.IdPerson == peopleid).CountAsync();
             List<PopulateBadge> badges = new List<PopulateBadge>();
             List<BadgesViewModel> badge = new List<BadgesViewModel>();
             badges = await _context.Badges.Where( x => x.IdPerson ==peopleid).Skip(skip).Take(take).ToListAsync();
-
-
             result.Skip = skip;
-
             result.Count = badges.Count();
             int Countgiri = 0;
 
@@ -110,12 +93,9 @@ namespace Badge.Web.Controllers
             {
                 Countgiri = (result.Count / 6);
             }
-
-
-            result.Count = Countgiri;
-
             
-
+            result.Count = Countgiri;
+            
             foreach (var p in badges)
             {
                 BadgesViewModel pv = new BadgesViewModel()
@@ -124,9 +104,9 @@ namespace Badge.Web.Controllers
                     IdPerson = p.IdPerson
                 };
 
-                    result.Data.Add(pv);
-                
+                result.Data.Add(pv);    
             }
+
             return View(result);
         }
 
@@ -141,6 +121,7 @@ namespace Badge.Web.Controllers
 
             var person = await _context.People
                 .SingleOrDefaultAsync(m => m.IdPerson == id);
+
             if (person == null)
             {
                 return NotFound();
@@ -164,25 +145,20 @@ namespace Badge.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 var newperson = Mapper.Map<Person>(model);
                 _context.Add(newperson);
                 await _context.SaveChangesAsync();
 
                 byte[] result = null;
                 using (var memoryStream = new System.IO.MemoryStream())
+
                 {
                     await model.AvatarImage.CopyToAsync(memoryStream);
                     result = memoryStream.ToArray();
                 }
 
                 newperson.Uri = await _uploadBlobService.UploadFile(result, $"{newperson.IdPerson}/{model.AvatarImage.FileName}");
-
                 await _context.SaveChangesAsync();
-
-
-
-
                 return RedirectToAction("Index");
             }
 
@@ -193,10 +169,7 @@ namespace Badge.Web.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             var person = await _context.People.SingleAsync(m => m.IdPerson == id);
-           
-
             PeopleViewModel model = Mapper.Map<PeopleViewModel>(person);
-
             return View(model);
         }
 
@@ -211,7 +184,6 @@ namespace Badge.Web.Controllers
             {
                 var person = await _context.People.SingleAsync(x => x.IdPerson == id);
                 Mapper.Map(model, person);
-
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -227,6 +199,7 @@ namespace Badge.Web.Controllers
             {
                 return NotFound();
             }
+
             bool haveBadge = _context.People
                 .Where(m => m.IdPerson == id)
                 .Any(x => x.Badge.Any());
@@ -243,8 +216,7 @@ namespace Badge.Web.Controllers
 
             return View(person);
         }
-
-
+        
         // POST: People/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -254,7 +226,6 @@ namespace Badge.Web.Controllers
             _context.People.Remove(person);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
-
         }
 
         private bool PersonExists(int id)

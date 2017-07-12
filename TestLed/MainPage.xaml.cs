@@ -31,42 +31,20 @@ namespace TestLed
         public MainPage()
         {
             this.InitializeComponent();
-            
         }
-
-
+        
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
             pinLed = GpioController.GetDefault().OpenPin(GPIO_PIN_GREEN);
             pinLed.SetDriveMode(GpioPinDriveMode.Output);
-            pinLed.Write(GpioPinValue.High);
-
-
+            pinLed.Write(GpioPinValue.High);   
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                pinLed = GpioController.GetDefault().OpenPin(GPIO_PIN_BLUE);
-                pinLed.SetDriveMode(GpioPinDriveMode.Output);
-                pinLed.Write(GpioPinValue.High);
-
-                //System.Threading.Thread.Sleep(5000);
-
-                //pinLed = GpioController.GetDefault().OpenPin(GPIO_PIN_BLUE);
-                //pinLed.SetDriveMode(GpioPinDriveMode.Output);
-                //pinLed.Write(GpioPinValue.Low);
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-            
-
+            pinLed = GpioController.GetDefault().OpenPin(GPIO_PIN_BLUE);
+            pinLed.SetDriveMode(GpioPinDriveMode.Output);
+            pinLed.Write(GpioPinValue.High);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -78,3 +56,4 @@ namespace TestLed
         }
     }
 }
+

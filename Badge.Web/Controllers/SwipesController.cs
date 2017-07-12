@@ -26,7 +26,6 @@ namespace Badge.Web.Controllers
         public async Task<IActionResult> Index(int peopleid, int take=6, int skip = 0)
         {
             PaginationViewModel<SwipesViewModel> result = new PaginationViewModel<SwipesViewModel>(); 
-            //int quantita = await _context.Swipe.CountAsync();
             List<Swipe> swipes = new List<Swipe>();
             int Countgiri = 0;
             int quantitatot = await _context.Swipe
@@ -36,14 +35,15 @@ namespace Badge.Web.Controllers
             int quantita = await _context.Swipe
                 .Where(x => x.Badge.IdPerson == peopleid)
                 .CountAsync();
+
             swipes = await _context.Swipe
                 .Include(x => x.Badge)
                 .Where(x => x.Badge.IdPerson == peopleid)
                 .Skip(skip).Take(take)
                 .ToListAsync();
-
             result.Count = quantita;
             result.Skip = skip;
+
             if (result.Count % 6 == 0)
             {
                 Countgiri = (result.Count / 6) - 1;
@@ -55,8 +55,6 @@ namespace Badge.Web.Controllers
 
             result.Count = Countgiri;
 
-            
-            
             foreach (var p in swipes)
             {
                 SwipesViewModel pv = new SwipesViewModel()
@@ -74,9 +72,7 @@ namespace Badge.Web.Controllers
                 ViewBag.NomeBadge = p.NomeBadge;
                 ViewBag.MachineName = p.MachineName;
             }
-
             
-
             return View(result);
         
     }
@@ -136,8 +132,6 @@ namespace Badge.Web.Controllers
                 return RedirectToAction("Index", new { peopleid = idperson });
             }
 
-            //ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
-            //ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
             return View(model);
         }
 
@@ -163,8 +157,6 @@ namespace Badge.Web.Controllers
                 return NotFound();
             }
 
-            //ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
-            //ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
             return View(model);
         }
 
@@ -175,7 +167,6 @@ namespace Badge.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, int idperson, SwipesViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 var swipe = await _context.Swipe.SingleAsync(x => x.IdSwipe == id);
@@ -184,12 +175,8 @@ namespace Badge.Web.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { peopleid = idperson });
             }
-
-
-            //ViewData["NomeBadge"] = new SelectList(_context.Badges, "NomeBadge", "NomeBadge", swipe.NomeBadge);
-            //ViewData["MachineName"] = new SelectList(_context.Machines, "Name", "Name", swipe.MachineName);
+            
             return View(model);
-
         }
 
         // GET: Swipes/Delete/5

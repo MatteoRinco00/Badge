@@ -13,7 +13,6 @@ namespace Badge.Practise.Test
             EF.Entity.PopulateBadge badge = new EF.Entity.PopulateBadge();
             badge.NomeBadge = nomeBadge;
             badge.Array = vettore;
-
             badge.Person = p;
             return badge;
         }

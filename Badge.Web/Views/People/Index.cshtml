@@ -13,65 +13,8 @@
     <a asp-action="Create" class="btn-floating btn-large waves-effect waves-light #F0180A" data-position="bottom" data-delay="50" data-tooltip="Create New"><i class="material-icons">add</i></a>
 
 </a>
-@*<table class="table table-hover ">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Data.First().Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Data.First().Cognome)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
 
-
-            @foreach (var item in Model.Data)
-            {
-
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cognome)
-                    </td>
-                    <td>
-
-                        <div class="btn-group" role="group" aria-label="...">
-                                <a href="#!" class="collection-item"><span class="new badge" data-badge-caption="badge"> @item.CountBadge</span> </a>
-
-                                <a asp-action="Edit" asp-route-id="@item.IdPerson">
-                                    <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Edit">
-                                        <i class="material-icons">border_color</i>
-                                    </button>
-                                </a>
-
-                                <a asp-action="Details" asp-route-id="@item.IdPerson">
-                                    <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Details">
-                                        <i class="large material-icons">pageview</i>
-                                    </button>
-                                </a>
-
-                                <a asp-action="Delete" asp-route-id="@item.IdPerson">
-                                    <button class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="Delete">
-                                        <i class="large material-icons">delete</i>
-                                    </button>
-                                </a>
-
-                            </div>
-                    </td>
-
-                </tr>
-            }
-        </tbody>
-    </table>*@
-<div>
-    <br />
-</div>
-
+<br />
 
 @for (int i = 0; i < Model.Data.Count; i++)
 {
@@ -170,7 +113,6 @@
         @: </div>
     }
 }
-
 
 <ul class="pagination">
 

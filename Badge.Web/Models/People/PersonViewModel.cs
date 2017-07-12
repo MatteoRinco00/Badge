@@ -25,8 +25,6 @@ namespace Badge.Web.Models.People
 
         public string Uri { get; set; }
 
-        public byte[] Array { get; set; }
-
         public IFormFile AvatarImage { get; set; }
         
         [Display(Name = "Numero badge")]

@@ -13,9 +13,6 @@ namespace Badge.Practise.Test
             p.Nome = nome;
             p.Cognome = cognome;
             p.Professione = professione;
-
-            // TODO: NO
-            // p.Badge
             return p;
         }
     }

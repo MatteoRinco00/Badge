@@ -9,7 +9,6 @@ namespace Badge.EF.Entity
     [Table("Swipes")]//Nome della Tabella nel Database 
     public class Swipe
     {
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdSwipe { get; set; }
@@ -28,6 +27,5 @@ namespace Badge.EF.Entity
         public string NomeBadge { get; set; }
         [ForeignKey("NomeBadge")]
         public PopulateBadge Badge { get; set; }
-        
     }
 }

@@ -14,7 +14,6 @@ namespace Badge.Web.Models.Badges
 
         [Display(Name = "Id Persona")]
         public int IdPerson { get; set; }
-
     }
 }
     

@@ -30,7 +30,6 @@ namespace Badge.Web.Controllers
 
             int quantita = await _context.Machines.CountAsync();
             List<Machine> person = await _context.Machines.Skip(skip).Take(take).ToListAsync();
-
             result.Count = quantita;
             result.Skip = skip;
             foreach (var p in person)
@@ -97,13 +96,13 @@ namespace Badge.Web.Controllers
             }
 
             var machine = await _context.Machines.SingleOrDefaultAsync(m => m.Name == id);
-
             MachinesViewModel model = Mapper.Map<MachinesViewModel>(machine);
 
             if (machine == null)
             {
                 return NotFound();
             }
+
             return View(model);
         }
 
@@ -118,7 +117,6 @@ namespace Badge.Web.Controllers
             {
                 var machine = await _context.Machines.SingleAsync(x => x.Name == id);
                 Mapper.Map(model, machine);
-
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
@@ -154,7 +152,6 @@ namespace Badge.Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
 
         private bool MachineExists(string id)
         {

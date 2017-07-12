@@ -27,7 +27,6 @@
         </thead>
         <tbody>
 
-
             @foreach (var item in Model.Data)
             {
                 <tr>
@@ -43,8 +42,6 @@
                         
                     </td>
                     </tr>
-
-
             }
         </tbody>
     </table>
@@ -60,9 +57,6 @@
 
     @for (int i = 0; i < (Model.Count) + 1; i++)
     {
-
-
-
             @if (Model.Skip / 6 == i)
             {
                 <li class="active"><a asp-controller="People" asp-action="Badge_people" asp-route-peopleid="@(Model.Data.FirstOrDefault().IdPerson)" asp-route-skip="@(i * 6)" asp-route-take="6">@(i + 1)</a></li>
@@ -72,8 +66,6 @@
                 <li><a asp-controller="People" asp-action="Badge_people" asp-route-peopleid="@(Model.Data.FirstOrDefault().IdPerson)" asp-route-skip="@(i * 6)" asp-route-take="6">@(i + 1)</a></li>
 
             }
-
-
     }
     <li>
 

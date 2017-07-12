@@ -52,18 +52,13 @@ namespace Badge.Practise.Test
             db.People.Add(persona9);
             db.People.Add(persona10);
             db.People.Add(persona11);
-            
             db.SaveChanges();
 
             PopulateMachine m = new PopulateMachine();
-
             string IpMachine1 = "172.168.0.1";
             string IpMachine2 = "172.168.0.2";
-          
-
             string MacAddress1 = "DD-5A-38-A2-D3-27";
             string MacAddress2 = "DF-7B-7A-22-A2-60";
-         
             Machine machine1 = m.Populate(IpMachine1, MacAddress1);
             Machine machine2 = m.Populate(IpMachine2, MacAddress2);
             Machine machine3 = m.Populate(IpMachine1, MacAddress1);
@@ -82,9 +77,7 @@ namespace Badge.Practise.Test
             Machine machine16 = m.Populate(IpMachine2, MacAddress2);
             Machine machine17 = m.Populate(IpMachine1, MacAddress1);
             Machine machine18 = m.Populate(IpMachine2, MacAddress2);
-
             Console.WriteLine(machine1);
-
             db.Machines.Add(machine1);
             db.Machines.Add(machine2);
             db.Machines.Add(machine3);
@@ -102,13 +95,8 @@ namespace Badge.Practise.Test
             db.Machines.Add(machine15);
             db.Machines.Add(machine16);
             db.Machines.Add(machine17);
-            db.Machines.Add(machine18);
-
-
-
-
+            db.Machines.Add(machine18);        
             db.SaveChanges();
-
 
             PopulateBadge b = new PopulateBadge();
             string nomeBadge1 = "Mtor01";
@@ -150,9 +138,7 @@ namespace Badge.Practise.Test
             db.Swipe.Add(swipe9);
             db.SaveChanges();
 
-            
             Console.ReadKey();
-
         }
     }
 }

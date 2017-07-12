@@ -14,6 +14,5 @@ namespace RFIDReader.Entity
         public string MachineName { get; set; }
         public string NomeBadge { get; set; }
         public int IdSwipe { get; set; }
-
     }
 }
