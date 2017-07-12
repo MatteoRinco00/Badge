@@ -7,10 +7,13 @@ using Rc522;
 using RFIDReader.Entity;
 using System;
 using System.Text;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.Devices.Gpio;
+using System.Threading.Tasks;
+using Badge.EF.Entity;
+using Windows.UI.Xaml.Media.Imaging;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -21,31 +24,34 @@ namespace RFIDReader
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        DeviceClient _client;
+        private DeviceClient _client;
+        private const int GPIO_PIN_BLUE = 27;
+        private const int GPIO_PIN_RED = 22;
+        private const int GPIO_PIN_GREEN = 17;
+        private GpioPin _pinBlueLed;
+        private GpioPin _pinRedLed;
+        private GpioPin _pinGreenLed;
+
         public MainPage()
         {
             this.InitializeComponent();
-            Task.Run(() => 
+
+            _client = DeviceClient.CreateFromConnectionString(
+            "HostName=badge.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=A9AJoMmDSvwtdpvflTKXl6z3LJdhhwGH4VdCVNMHJMU="
+            , "badgepi"
+            , Microsoft.Azure.Devices.Client.TransportType.Amqp);
+
+            _pinBlueLed = GpioController.GetDefault().OpenPin(GPIO_PIN_BLUE);
+            _pinRedLed = GpioController.GetDefault().OpenPin(GPIO_PIN_RED);
+            _pinGreenLed = GpioController.GetDefault().OpenPin(GPIO_PIN_GREEN);
+
+            Task read = Task.Run(() => 
             {
-                _client = DeviceClient.CreateFromConnectionString(
-                    "HostName=badge.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=pmnck0gcq+TFjDW6LCtotsE4on1IN7UMPwb6x2XguqE="
-                    , "badgepi"
-                    , Microsoft.Azure.Devices.Client.TransportType.Mqtt);
-                try
-                {
-                    _client.OpenAsync().Wait();
-                }
-                catch (Exception ex)
-                {
-
-                    throw;
-                }
-                _client.SetMethodHandlerAsync("MetodoInvocatoDaServer", MetodoInvocatoDaServer, "");
-
-            }).Wait();
-            
-            Task read = Task.Run(async () => await ReadAsync()); // Lancio il task in backgroud  
-           // Task read2 = Task.Run(async () => await RegistraMetodoSulDispositivoAsync()); // Lancio il task in backgroud  
+                Task t2 = RiceviDatiAsync();
+                Task t1 = ReadAsync();
+                
+                Task.WaitAll(t1, t2);
+            }); // Lancio il task in backgroud              
         }
 
         private async Task ReadAsync()
@@ -65,7 +71,8 @@ namespace RFIDReader
                         Uid uid = mfrc.ReadUid();
                         if (uid.IsValid)
                         {
-                            await SuccesReadAsync(uid);
+
+                            await CheckingAsync(uid);
                             DataBadge badge = new DataBadge
                             {
                                 Orario = DateTime.Now,
@@ -73,13 +80,16 @@ namespace RFIDReader
                                 Posizione = "Villafranca"
 
                             };
-
+                            //ACCENSIONE LED BLUE
+                            _pinBlueLed.SetDriveMode(GpioPinDriveMode.Output);
+                            _pinBlueLed.Write(GpioPinValue.High);
+                            
                             var messageString = JsonConvert.SerializeObject(badge);
                             var message = new Microsoft.Azure.Devices.Client.Message(Encoding.ASCII.GetBytes(messageString));
                             await _client.SendEventAsync(message);
                         }
                         else
-                            await ErrorReadAsync(uid);
+                            await ErrorReadAsync();
 
                         mfrc.HaltTag();
                     }
@@ -92,44 +102,90 @@ namespace RFIDReader
             }
         }
 
-        public async Task RegistraMetodoSulDispositivoAsync()
+        public async Task RiceviDatiAsync()
         {
-           
+            while (true)
+            {
+
+                Microsoft.Azure.Devices.Client.Message persona = await _client.ReceiveAsync();
+
+                // Se non arrivano messaggi nell'ultimo minuto (default value) il messaggio risulta NULL.
+                if (persona == null) continue;
+
+                // Le operazioni sul messaggio dovranno avere la logica di IDEMPOTENZA.
+                // L'esecuzione dell'azione potrebbe fallire e il messaggio potrebbe essere ripristinato
+
+                try
+                {
+                    string messaggio = Encoding.ASCII.GetString(persona.GetBytes());
+
+                    _pinBlueLed.SetDriveMode(GpioPinDriveMode.Output);
+                    _pinBlueLed.Write(GpioPinValue.Low);
+
+                    if (messaggio == null)
+                    {
+                        _pinRedLed.SetDriveMode(GpioPinDriveMode.Output);
+                        _pinRedLed.Write(GpioPinValue.High);
+                        await ErrorReadAsync();
+                    }
+                    else
+                    {
+                        _pinGreenLed.SetDriveMode(GpioPinDriveMode.Output);
+                        _pinGreenLed.Write(GpioPinValue.High);
+                        
+                        Person personaPresente = JsonConvert.DeserializeObject<Person>(messaggio);
+                        await SuccesReadAsync(personaPresente);
+                        if (!string.IsNullOrEmpty(personaPresente.Uri))
+                        {
+                            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                            {
+                                PersonImage.Source = new BitmapImage(new Uri(personaPresente.Uri));
+                            });
+                        }
+
+                        await ResetAsync();
+                    }
+                    await _client.CompleteAsync(persona); // sblocco il messaggio e notifico che è stato ricevuto correttamente
+
+                }
+                catch (Exception)
+                {
+                    await _client.AbandonAsync(persona);
+                }
+                
+                await ResetAsync();
+            }
         }
 
 
-        /// <summary>
-        /// Logica del metodo richiamato dal server.
-        /// </summary>
-        /// <param name="methodRequest"></param>
-        /// <param name="userContext"></param>
-        /// <returns></returns>
-        public async Task<MethodResponse> MetodoInvocatoDaServer(MethodRequest methodRequest, object userContext)
-        {
-            var person = methodRequest.DataAsJson;
-            string clientVerbose = $"Metodo invocato dal client: Attivazione lavori in data {((DateTimeOffset)userContext).Date.ToString()}";
-            Console.WriteLine(clientVerbose);
-            MethodResponse response = new MethodResponse(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(true)), 0);
-            return response;
-        }
-
-
-        private async Task SuccesReadAsync(Uid uid)
+        private async Task SuccesReadAsync(Person person)
         {
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 Result.Fill = new SolidColorBrush(Windows.UI.Colors.Green);
-                Uid.Text = $"{uid.FullUid[0]} - {uid.FullUid[1]} - {uid.FullUid[2]} - {uid.FullUid[3]} - {uid.FullUid[4]}";
+                Uid.Text = $"{person.Nome} {person.Cognome} - {person.Professione} ";
             });
-            await ResetAsync();
         }
 
-        private async Task ErrorReadAsync(Uid uid)
+        private async Task CheckingAsync(Uid uid)
         {
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
-                Result.Fill = new SolidColorBrush(Windows.UI.Colors.Red);
+                Result.Fill = new SolidColorBrush(Windows.UI.Colors.Blue);
                 Uid.Text = $"{uid.FullUid[0]} - {uid.FullUid[1]} - {uid.FullUid[2]} - {uid.FullUid[3]} - {uid.FullUid[4]}";
+            });
+        }
+
+        private async Task ErrorReadAsync()
+        {
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                if (_pinRedLed.Read() == GpioPinValue.High)
+                {
+                    _pinRedLed.Write(GpioPinValue.Low);
+                }
+                Result.Fill = new SolidColorBrush(Windows.UI.Colors.Red);
+                Uid.Text = "Persona non riconosciuta";
             });
             await ResetAsync();
         }
@@ -142,10 +198,16 @@ namespace RFIDReader
 
         private async Task ResetReadAsync()
         {
+            if(_pinGreenLed.Read() == GpioPinValue.High)
+            {
+                _pinGreenLed.Write(GpioPinValue.Low);
+            }
+           
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
                 Result.Fill = new SolidColorBrush(Windows.UI.Colors.LightGray);
                 Uid.Text = "Passa il Badge";
+                PersonImage.Source = null;
             });
         }
     }

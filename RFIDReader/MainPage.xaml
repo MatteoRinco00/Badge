@@ -12,8 +12,14 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="150"></RowDefinition>
         </Grid.RowDefinitions>
-        <Ellipse x:Name="Result" Grid.Row="0" Width="450" Height="450" Margin="10" Stroke="Black" Fill="LightGray"></Ellipse>
-        <TextBlock x:Name="Uid" Grid.Row="1" Foreground="Black" Text="Passa il Badge" FontSize="80"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Ellipse x:Name="Result" Grid.Row="0" Grid.Column="0" Width="450" Height="450" Margin="10" Stroke="Black" Fill="LightGray"></Ellipse>
+        <Image x:Name="PersonImage" Grid.Row="0" Grid.Column="1"></Image>
+        <TextBlock x:Name="Uid" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Foreground="Black" Text="Passa il Badge" FontSize="80"
                    HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
     </Grid>
 </Page>

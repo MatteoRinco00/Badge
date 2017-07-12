@@ -89,6 +89,8 @@ namespace IoTHub.Server
                     if (!thereisperson)
                     {
                         Console.WriteLine("Errore non esiste la persona");
+                        string messageToSend = JsonConvert.SerializeObject(null);
+                        await _serverSender.InviaAsync("badgepi", messageToSend);
                     }
 
                     else
@@ -131,9 +133,9 @@ namespace IoTHub.Server
                             Person currentPerson = await context.People.FindAsync(currentBadge.IdPerson);
                             currentPerson.Badge = null;
 
-                            await _serverSender.InvocaMetodoSulDevice("badgepi", currentPerson);
-                            string messageToSend = JsonConvert.SerializeObject(new DataBadge { Dispositivo = "badgepi" });
-                            //await _serverSender.InviaAsync("badgepi", messageToSend);
+                            string messageToSend = JsonConvert.SerializeObject(currentPerson);
+                            await _serverSender.InviaAsync("badgepi", messageToSend);
+                            
                         }
                         catch (Exception e)
                         {
