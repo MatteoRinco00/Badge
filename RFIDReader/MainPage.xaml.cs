@@ -180,6 +180,7 @@ namespace RFIDReader
         {
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
             {
+                Task.Delay(5000);
                 if (_pinRedLed.Read() == GpioPinValue.High)
                 {
                     _pinRedLed.Write(GpioPinValue.Low);
